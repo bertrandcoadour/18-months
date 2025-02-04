@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+type Record {
+  timestamp                     Int
+  positionLat                   Int?
+  positionLong                  Int?
+  distance                      Float?
+  altitude                      Float?
+  speed                         Float?
+  cycleLength16                 Float?
+  currentStress                 Float?
+  heartRate                     Int?
+  cadence                       Int?
+  fractionalCadence             Float?
+  enhancedAltitude              Float?
+  enhancedSpeed                 Float?
+}
+
+type Lap {
+  timestamp                    Int
+  startTime                    Int
+  startPositionLat             Int?
+  startPositionLong            Int?
+  endPositionLat               Int?
+  endPositionLong              Int?
+  totalElapsedTime             Float?
+  totalTimerTime               Float?
+  totalDistance                Float?
+  totalCycles                  Int?
+  messageIndex                 Int?
+  totalCalories                Int?
+  avgSpeed                     Float?
+  maxSpeed                     Float?
+  totalAscent                  Int?
+  totalDescent                 Int?
+  event                        String
+  eventType                    String
+  avgHeartRate                 Int?
+  maxHeartRate                 Int?
+  avgCadence                   Int?
+  maxCadence                   Int?
+  lapTrigger                   String?
+  sport                        String?
+  subSport                     String?
+  avgFractionalCadence         Float?
+  maxFractionalCadence         Float?
+  totalStrides                 Int?
+  avgRunningCadence            Int?
+  maxRunningCadence            Int?
+  enhancedAvgSpeed             Float?
+  enhancedMaxSpeed             Float?
+}
+
+model Activity {
+  id                               String @id @default(auto()) @map("_id") @db.ObjectId
+  title                            String
+  timestamp                        Int
+  startTime                        Int
+  startPositionLat                 Int?
+  startPositionLong                Int?
+  totalElapsedTime                 Float?
+  totalTimerTime                   Float?
+  totalDistance                    Float
+  totalCycles                      Int?
+  necLat                           Int?
+  necLong                          Int?
+  swcLat                           Int?
+  swcLong                          Int?
+  endPositionLat                   Int?
+  endPositionLong                  Int?
+  sportProfileName                 String?
+  messageIndex                     Int?
+  totalCalories                    Int?
+  avgSpeed                         Float?
+  maxSpeed                         Float?
+  totalAscent                      Int?
+  totalDescent                     Int?
+  firstLapIndex                    Int?
+  numLaps                          Int?
+  event                            String?
+  eventType                        String?
+  sport                            String?
+  subSport                         String?
+  avgHeartRate                     Int?
+  maxHeartRate                     Int?
+  avgCadence                       Int?
+  maxCadence                       Int?
+  totalTrainingEffect              Float?
+  trigger                          String?
+  avgFractionalCadence             Float?
+  maxFractionalCadence             Float?
+  totalAnaerobicTrainingEffect     Float?
+  totalStrides                     Int?
+  avgRunningCadence                Int?
+  maxRunningCadence                Int?
+  enhancedAvgSpeed                 Float?
+  enhancedMaxSpeed                 Float?
+
+  laps                             Lap[]
+  records                          Record[]
+
+  country                          String?
+  city                             String?
+
+  updatedAt                        DateTime @updatedAt
+  createdAt                        DateTime @default(now())
+}
+
+// model GPXFile {
+//   id                            String @id @default(auto()) @map("_id") @db.ObjectId
+//   activity                      Activity @relation(fields: [activity_id], references: [id])
+//   activity_id                   String @unique @db.ObjectId  // relation scalar field (used in the `@relation` attribute above)
+//   content                       String
+
+model Country {
+  id                               String @id @default(auto()) @map("_id") @db.ObjectId
+  code                             String
+  name                             String
+  capital                          String?
+  population                       Int?
+  continentCode                    String?
+  shape                            Json?
+  cities                           City[]
+}
+
+type City {
+  name                             String
+  latitude                         Float?
+  longitude                        Float?
+  countryCode                      String?
+}

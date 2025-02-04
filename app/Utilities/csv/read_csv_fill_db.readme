@@ -1,0 +1,21 @@
+  //use the following code to read the CSV and fill the sqlite database
+
+  import { readCSV } from "./Utilities/csv/csvParser";
+  import prisma from "@/lib/db";
+  
+  // !!!!!!!!!! CAREFULL !!!!!!!!
+  //this will delete all entries in the database  
+  const results = await prisma.gPXFile.deleteMany();
+  const results2 = await prisma.activity.deleteMany();
+  
+  const activities = await readCSV();
+  console.log("CSV read successfully");
+
+  let count = 0;
+  for (const activity of activities) {
+    const result = await prisma.Activity.create({
+      data: activity,
+    });
+    count += 1;
+    console.log("data in the database : ", count);
+  }
