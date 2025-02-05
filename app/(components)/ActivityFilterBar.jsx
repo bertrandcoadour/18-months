@@ -38,6 +38,7 @@ function ActivityFilterBar() {
                   icon={item.icon}
                   label={item.label}
                   subLabel={item.subLabel}
+                  description={item.description}
                   selected={sport === item.label && subSport === item.subLabel}
                 />
               )

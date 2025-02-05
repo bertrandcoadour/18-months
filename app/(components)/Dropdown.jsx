@@ -1,27 +1,25 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function Dropdown({ options, onSelect }) {
+const Dropdown = ({ options, onSelect, defaultValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(""); // For the input value
-  const [filteredOptions, setFilteredOptions] = useState(options); // For filtering
-  const dropdownRef = useRef(null); // Ref for outside click handling
+  const [inputValue, setInputValue] = useState(defaultValue);
+  const [filterText, setFilterText] = useState("");
+  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    // Filter options based on input value
-    const filtered = options.filter((option) =>
-      option.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-  }, [inputValue, options]);
+  const filteredOptions = options.filter((option) =>
+    option.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    setIsOpen(true); // Open dropdown on input change
+  const handleFilterChange = (event) => {
+    setFilterText(event.target.value);
   };
 
   const handleOptionClick = (option) => {
@@ -32,51 +30,68 @@ function Dropdown({ options, onSelect }) {
     }
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
-    }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
-    <div ref={dropdownRef}>
-      <div className="relative" onClick={toggleDropdown}>
-        <input
-          type="text"
-          className="inline-flex items-center justify-center rounded-md text-sm border border-[#2a524b] h-10 px-4 py-2"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Type to search..." // Placeholder text
-          onClick={toggleDropdown} // Keep dropdown open on input click
+    <div className="relative " ref={dropdownRef}>
+      <button
+        size={30}
+        onClick={toggleDropdown}
+        //buttonText={filterText}
+        className="w-80 h-8 rounded-md   bg-activityList text-default-text  m-1 p-1 text-start "
+      >
+        {inputValue}
+      </button>
+      {isOpen ? (
+        <FontAwesomeIcon
+          className="absolute right-1.5 top-1/2 transform -translate-y-1/2 px-4 py-2 pr-2 hover:text-neutral-500 transition cursor-pointer"
+          icon={faChevronUp}
+          onClick={toggleDropdown}
         />
-        <span className="dropdown-arrow">{isOpen ? "▲" : "▼"}</span>
-      </div>
-      {isOpen && filteredOptions.length > 0 ? ( // Show only if filtered options exist
-        <div className="absolute left-1/2 -translate-x-1/2 top-15 z-1000">
-          <ul className="w-56 h-auto shadow-md rounded-md p-1 border bg-activityList">
+      ) : (
+        <FontAwesomeIcon
+          className="absolute right-1.5 top-1/2 transform -translate-y-1/2 px-4 py-2 pr-2 hover:text-neutral-500 transition cursor-pointer"
+          icon={faChevronDown}
+          onClick={toggleDropdown}
+        />
+      )}
+
+      {isOpen && (
+        <div className="absolute flex flex-col w-96  z-10 border rounded-md  bg-activityList">
+          <input
+            type="text"
+            placeholder="Filter..."
+            value={filterText}
+            onChange={handleFilterChange}
+            className="h-10  border border-white "
+          />
+          <ul className="w-full h-full max-h-64 pb-3 bg-activityList overflow-auto">
             {filteredOptions.map((option) => (
               <li
                 key={option}
                 onClick={() => handleOptionClick(option)}
-                className={`relative flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-md`}
+                className="px-3 py-2 hover:bg-activityList-hover cursor-pointer"
               >
                 {option}
               </li>
             ))}
           </ul>
         </div>
-      ) : isOpen && filteredOptions.length === 0 ? (
-        <div className="no-options">No options found.</div>
-      ) : null}
+      )}
     </div>
   );
-}
+};
 
 export default Dropdown;

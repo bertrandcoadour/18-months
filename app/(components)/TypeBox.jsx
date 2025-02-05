@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 
-function TypeBox({ icon, label, subLabel, selected }) {
+function TypeBox({ icon, label, subLabel, description, selected }) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -57,7 +57,7 @@ function TypeBox({ icon, label, subLabel, selected }) {
       } ${selected ? "text-neutral-500" : "text-neutral-200"}`}
     >
       <FontAwesomeIcon icon={icon} className="icon " />
-      <div className="font-medium text-xs">{label}</div>
+      <div className="font-medium text-xs">{description}</div>
     </div>
   );
 }

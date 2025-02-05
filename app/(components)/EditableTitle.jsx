@@ -16,6 +16,7 @@ function EditableTitle({ activity }) {
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [country, setCountry] = useState(activity.country);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dropdownOptions = [
     "Option 1",
@@ -31,6 +32,14 @@ function EditableTitle({ activity }) {
     "Option 3",
     "Option 4",
   ];
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -55,57 +64,25 @@ function EditableTitle({ activity }) {
   };
 
   return (
-    <div>
-      {isEditing ? (
-        <div className="flex gap-1">
-          <input
-            className="text-2xl font-normal"
-            type="text"
-            maxLength={75}
-            value={title}
-            size={50}
-            onChange={handleChange}
-          />
-          <Dropdown
-            options={dropdownOptions}
-            onSelect={handleCountryChange}
-            defaultSelection={country}
-          />
-          <FontAwesomeIcon
-            icon={faCheck}
-            size="xl"
-            className="hover:cursor-pointer hover:text-green-600 self-center"
-            onClick={handleSaveClick}
-          />
-          <FontAwesomeIcon
-            icon={faXmark}
-            size="xl"
-            className="hover:cursor-pointer hover:text-red-600 self-center"
-            onClick={handleCancelClick}
-          />
-        </div>
-      ) : (
-        <div className="flex gap-10">
-          <span className="text-3xl font-normal self-center">{title}</span>
+    <div className="flex gap-10">
+      <span className="text-3xl font-normal self-center">{title}</span>
 
-          <div className="flex gap-2">
-            <FontAwesomeIcon
-              className="self-center"
-              icon={faLocationDot}
-              size="xl"
-            />
-            <span className="text-xl font-normal self-center">
-              {city + ", " + country}
-            </span>
-          </div>
+      <div className="flex gap-2">
+        <FontAwesomeIcon
+          className="self-center"
+          icon={faLocationDot}
+          size="xl"
+        />
+        <span className="text-xl font-normal self-center">
+          {city + ", " + country}
+        </span>
+      </div>
 
-          <FontAwesomeIcon
-            icon={faPen}
-            className="hover:cursor-pointer hover:text-gray-800 self-center"
-            onClick={handleEditClick}
-          />
-        </div>
-      )}
+      <FontAwesomeIcon
+        icon={faPen}
+        className="hover:cursor-pointer hover:text-gray-800 self-center"
+        onClick={openModal}
+      />
     </div>
   );
 }

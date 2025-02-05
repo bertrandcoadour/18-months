@@ -30,6 +30,21 @@ export async function getCountryName(countryCode) {
   }
 }
 
+export async function getCountryCode(countryName) {
+  try {
+    return await prisma.Country.findFirstOrThrow({
+      where: {
+        name: countryName,
+      },
+      select: {
+        code: true,
+      },
+    });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function getAllCities() {
   try {
     const countriesWithCities = await prisma.Country.findMany({
@@ -38,13 +53,43 @@ export async function getAllCities() {
       },
     });
 
-    // Flatten the array of cities: countriesWithCities is an array of objects, each with a cities property (which is an array of cities). We want a single array of all cities.
-
     const allCities = countriesWithCities.flatMap((country) => country.cities);
 
     return allCities;
   } catch (error) {
     console.error("Error fetching cities:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function getCitiesFromCountry(countryName) {
+  try {
+    const countriesWithCities = await prisma.Country.findMany({
+      select: {
+        cities: true, // Only select the cities related to each country
+      },
+      where: {
+        name: countryName,
+      },
+    });
+
+    const allCities = countriesWithCities.flatMap((country) => country.cities);
+    return allCities;
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function getAllCountries() {
+  try {
+    return await prisma.Country.findMany({
+      select: {
+        name: true, // Only select the cities related to each country
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching countries:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
 }

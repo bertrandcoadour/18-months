@@ -55,7 +55,6 @@ const SearchBar = ({ isActive }) => {
     >
       <div className="relative w-full">
         <input
-          //className="flex-grow h-full "
           type="text"
           value={query}
           size={35}

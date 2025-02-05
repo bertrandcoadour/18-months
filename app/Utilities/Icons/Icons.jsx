@@ -20,42 +20,41 @@ export const activity_types_icons = [
     label: "walking",
     subLabel: "generic",
     icon: faPersonHiking,
-    description: "Filter only walking activities",
+    description: "Walking",
   },
   {
     label: "running",
     subLabel: "generic",
     icon: faPersonRunning,
-    description: "Filter only running activities",
+    description: "Running",
   },
   {
     label: "running",
     subLabel: "trail",
     icon: faMountain,
-    description: "Filter only trail activities",
+    description: "Trail running",
   },
   {
     label: "cycling",
     subLabel: "generic",
     icon: faPersonBiking,
-    description: "Filter only cycling activities",
+    description: "Cycling",
   },
   {
     label: "swimming",
     subLabel: "lapSwimming",
     icon: faPersonSwimming,
-    description: "Filter only swimming activities",
+    description: "Swimming",
   },
   {
     label: "training",
     subLabel: "cardioTraining",
     icon: faDumbbell,
-    description: "Filter only cardio activities",
+    description: "Cardio training",
   },
   {
     label: "Not found",
     icon: faNotdef,
-    description: "Icon not found",
   },
 ];
 
@@ -65,4 +64,13 @@ export function getActivityIcon(sport, subSport) {
   }
 
   return activity_types_icons.at(-1).icon;
+}
+
+export function getActivityDescription(sport, subSport) {
+  for (const icon of activity_types_icons) {
+    if (icon.label === sport && icon.subLabel == subSport)
+      return icon.description;
+  }
+
+  return null;
 }
