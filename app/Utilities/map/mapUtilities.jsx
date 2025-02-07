@@ -167,6 +167,30 @@ export function getNearestCity(cities, lat, long) {
   };
 }
 
+export function getCitiesWithinKilometers(
+  cities,
+  originLat,
+  originLong,
+  radius
+) {
+  let citiesWithinRadius = [];
+
+  cities.forEach((city) => {
+    let distance = haversine(
+      city.latitude,
+      city.longitude,
+      originLat,
+      originLong
+    );
+
+    if (distance <= radius) {
+      citiesWithinRadius.push(city);
+    }
+  });
+
+  return citiesWithinRadius;
+}
+
 export function getVisitiedCountries(activities) {
   const countries = new Set();
 

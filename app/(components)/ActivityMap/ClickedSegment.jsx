@@ -9,8 +9,6 @@ import {
 const ClickedSegment = ({ data, fullTrackCoords }) => {
   const map = useMap();
 
-  //console.log(data);
-
   //remove each layer associated with a segment if there is one already
   map.eachLayer((layer) => {
     if (layer.feature) {

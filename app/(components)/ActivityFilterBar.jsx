@@ -2,7 +2,7 @@
 
 import React from "react";
 import TypeBox from "./TypeBox";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { activity_types_icons } from "../Utilities/Icons/Icons";
 import { info_to_display } from "../Utilities/InfoToDisplay/InfoToDisplay";
 import UpAndDownBox from "./UpAndDownBox";

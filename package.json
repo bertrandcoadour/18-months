@@ -10,28 +10,27 @@
   },
   "dependencies": {
     "-": "^0.0.1",
-    "@fortawesome/fontawesome-free": "^6.6.0",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@garmin/fitsdk": "^21.141.0",
-    "@prisma/client": "^5.21.1",
-    "@we-gold/gpxjs": "^1.0.12",
-    "csv-parser": "^3.0.0",
+    "@garmin/fitsdk": "^21.161.0",
+    "@prisma/client": "^6.3.1",
+    "@tailwindcss/postcss": "^4.0.4",
+    "csv-parser": "^3.2.0",
     "leaflet": "^1.9.4",
-    "next": "14.2.15",
-    "offline-geocode-city": "^1.0.2",
+    "next": "15.1.6",
     "query-string": "^9.1.1",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19",
+    "react-dom": "^19",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-leaflet": "^4.2.1",
-    "recharts": "^2.14.1"
+    "react-leaflet": "^5.0.0",
+    "recharts": "^2.15.1"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.15",
-    "postcss": "^8",
-    "prisma": "^5.21.1",
-    "tailwindcss": "^3.4.1"
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "postcss": "^8.5.1",
+    "prisma": "^6.3.1",
+    "tailwindcss": "^4.0.4"
   }
 }

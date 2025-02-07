@@ -4,9 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Dropdown = ({ options, onSelect, defaultValue }) => {
+const Dropdown = ({ options, onSelect, value }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(defaultValue);
   const [filterText, setFilterText] = useState("");
   const dropdownRef = useRef(null);
 
@@ -14,8 +13,10 @@ const Dropdown = ({ options, onSelect, defaultValue }) => {
     option.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (event) => {
+    event.preventDefault();
     setIsOpen(!isOpen);
+    setFilterText("");
   };
 
   const handleFilterChange = (event) => {
@@ -23,7 +24,6 @@ const Dropdown = ({ options, onSelect, defaultValue }) => {
   };
 
   const handleOptionClick = (option) => {
-    setInputValue(option); // Set input value to selected option
     setIsOpen(false);
     if (onSelect) {
       onSelect(option);
@@ -45,14 +45,14 @@ const Dropdown = ({ options, onSelect, defaultValue }) => {
   }, []);
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <button
-        size={30}
+        //size={30}
         onClick={toggleDropdown}
         //buttonText={filterText}
         className="w-80 h-8 rounded-md   bg-activityList text-default-text  m-1 p-1 text-start "
       >
-        {inputValue}
+        {value}
       </button>
       {isOpen ? (
         <FontAwesomeIcon
@@ -68,7 +68,7 @@ const Dropdown = ({ options, onSelect, defaultValue }) => {
         />
       )}
 
-      {isOpen && (
+      {isOpen && filteredOptions.length > 0 && (
         <div className="absolute flex flex-col w-96  z-10 border rounded-md  bg-activityList">
           <input
             type="text"
@@ -88,6 +88,11 @@ const Dropdown = ({ options, onSelect, defaultValue }) => {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+      {isOpen && filteredOptions.length === 0 && (
+        <div className="absolute flex  w-96  z-10 border rounded-md  bg-activityList">
+          <span className="p-2">No options </span>
         </div>
       )}
     </div>

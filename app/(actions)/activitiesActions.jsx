@@ -94,6 +94,23 @@ export async function updateActivityTitle(_id, newTitle) {
   }
 }
 
+export async function updateActivityType(_id, newType) {
+  try {
+    await prisma.Activity.update({
+      where: {
+        id: _id,
+      },
+      data: {
+        title: newTitle,
+      },
+    });
+
+    revalidatePath("/");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function updateActivityCountry(_id, newCountry) {
   try {
     await prisma.Activity.update({
@@ -122,4 +139,9 @@ export async function updateActivityCity(_id, newCity) {
   } catch (error) {
     throw new Error(error.message);
   }
+}
+
+export async function submitActivityEditionForm(previousState, formData) {
+  console.log("inside submitting action...");
+  console.log(formData);
 }

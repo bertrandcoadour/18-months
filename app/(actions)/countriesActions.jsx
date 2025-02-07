@@ -66,7 +66,7 @@ export async function getCitiesFromCountry(countryName) {
   try {
     const countriesWithCities = await prisma.Country.findMany({
       select: {
-        cities: true, // Only select the cities related to each country
+        cities: true, // Only select the cities related to the country
       },
       where: {
         name: countryName,

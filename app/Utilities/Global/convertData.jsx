@@ -39,6 +39,25 @@ export function convertMetersPerSecondsToKmPerSeconds(speedInMetersPerSeconds) {
   return Math.round(speedInMetersPerSeconds * 3.6 * 100) / 100;
 }
 
+export function convertActivityTypeToDBType(activityType) {
+  switch (activityType) {
+    case "Walking":
+      return { sport: "walking", subSport: "generic" };
+    case "Running":
+      return { sport: "running", subSport: "generic" };
+    case "Trail running":
+      return { sport: "trail", subSport: "generic" };
+    case "Cycling":
+      return { sport: "cycling", subSport: "generic" };
+    case "Swimming":
+      return { sport: "swimming", subSport: "generic" };
+    case "Cardio training":
+      return { sport: "training", subSport: "cardioTraining" };
+    default:
+      return null;
+  }
+}
+
 export function filterOutliers(someArray) {
   // Copy the values, rather than operating on references to existing values
   var values = someArray.concat();
