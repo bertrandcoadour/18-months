@@ -15,22 +15,21 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@garmin/fitsdk": "^21.161.0",
     "@prisma/client": "^6.3.1",
-    "@tailwindcss/postcss": "^4.0.4",
     "csv-parser": "^3.2.0",
     "leaflet": "^1.9.4",
     "next": "15.1.6",
+    "postcss": "^8.5.1",
     "query-string": "^9.1.1",
     "react": "^19",
     "react-dom": "^19",
     "react-infinite-scroll-component": "^6.1.0",
     "react-leaflet": "^5.0.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
-    "postcss": "^8.5.1",
-    "prisma": "^6.3.1",
-    "tailwindcss": "^4.0.4"
+    "prisma": "^6.3.1"
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect, useActionState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -15,11 +15,14 @@ import {
   getAllCountries,
   getCitiesFromCountry,
 } from "@/app/(actions)/countriesActions";
+import { getCitiesWithinKilometers } from "@/app/Utilities/map/mapUtilities";
 import {
-  getCitiesWithinKilometers,
-  updateActivitiesTitle,
-} from "@/app/Utilities/map/mapUtilities";
-import { submitActivityEditionForm } from "@/app/(actions)/activitiesActions";
+  updateActivityCity,
+  updateActivityCountry,
+  updateActivityTitle,
+  updateActivityType,
+} from "@/app/(actions)/activitiesActions";
+import { convertActivityTypeToDBType } from "@/app/Utilities/Global/convertData";
 
 function ActivityEditionBlock({ activity }) {
   const router = useRouter();
@@ -35,10 +38,6 @@ function ActivityEditionBlock({ activity }) {
   const [locationLat, setLocationLat] = useState(0);
   const [locationLong, setLocationLong] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false); // State for button enabled/disabled
-  const [error, handleSubmit, isPending] = useActionState(
-    submitActivityEditionForm,
-    null
-  );
 
   const activityTypesOptions = activity_types_icons
     .filter((item) => item.description && item.label != "All")
@@ -61,6 +60,7 @@ function ActivityEditionBlock({ activity }) {
     []
   );
 
+  //get the longitude and latitude of the default city, to be later used as the reference for the cities to display to the user
   useEffect(() => {
     const getLocationOrigin = async () => {
       let cities = await getCitiesFromCountry(activity.country);
@@ -78,6 +78,7 @@ function ActivityEditionBlock({ activity }) {
     setCity(activity.city);
   }, [activity.country, activity.city]);
 
+  //get all the countries to display to the user
   useEffect(() => {
     const fetchCountries = async () => {
       let countries = await getAllCountries(); // API call
@@ -90,8 +91,9 @@ function ActivityEditionBlock({ activity }) {
 
   useEffect(() => {
     validateForm();
-  });
+  }); //check the form validity as soon as something is updated of the page
 
+  //get the cities to display to the user
   useEffect(() => {
     const fetchCities = async () => {
       if (locationLat != 0 && locationLong != 0) {
@@ -112,7 +114,7 @@ function ActivityEditionBlock({ activity }) {
     };
 
     fetchCities();
-  }, [country, activity.country, locationLat, locationLong]); // Empty dependency array ensures this runs only once
+  }, [country, activity.country, locationLat, locationLong]); //get the cities as soon as the coutry selection changed
 
   const handleTypeChanged = (event) => {
     setType(event);
@@ -137,11 +139,34 @@ function ActivityEditionBlock({ activity }) {
       : setIsFormValid(false);
   };
 
+  const handleCancel = (event) => {
+    event.preventDefault();
+    router.push(`/activities/${activity.id}`);
+  };
+
+  const handleSubmit = () => {
+    const submit = async () => {
+      await updateActivityTitle(activity.id, title);
+      const activitySport = convertActivityTypeToDBType(type);
+      await updateActivityType(
+        activity.id,
+        activitySport.sport,
+        activitySport.subSport
+      );
+      await updateActivityCity(activity.id, city);
+      await updateActivityCountry(activity.id, country);
+
+      router.push(`/activities/${activity.id}`);
+    };
+
+    submit();
+  };
+
   return (
     <div className="flex flex-row">
       <form
         className="flex flex-col gap-6 w-1/3 p-6 overflow-auto"
-        onSubmit={handleSubmit}
+        action={handleSubmit}
       >
         <label className="text-3xl font-normal self-center">
           Edit your activity
@@ -153,12 +178,14 @@ function ActivityEditionBlock({ activity }) {
             options={activityTypesOptions}
             onSelect={handleTypeChanged}
             value={type}
+            name="type"
           />
         </div>
         <div className="flex flex-col w-full max-w-80">
           <span>Title : </span>
           <textarea
             type="text"
+            name="title"
             value={title}
             style={{ width: "320px", height: "80px" }}
             onChange={handleTitleChange}
@@ -197,14 +224,13 @@ function ActivityEditionBlock({ activity }) {
                 : "bg-blue-accent hover:bg-blue-accent-hover cursor-pointer"
             }`}
             type="submit"
-            //disabled={!isFormValid}
-            disabled={true}
+            disabled={!isFormValid}
           >
             Save
           </button>
           <button
             className="w-20 h-8 rounded-md   bg-activityList hover:bg-activityList-hover text-default-text"
-            onClick={() => router.back()}
+            onClick={handleCancel}
           >
             Cancel
           </button>
@@ -222,63 +248,6 @@ function ActivityEditionBlock({ activity }) {
         )}
       </div>
     </div>
-
-    // <div className="flex flex-row">
-    //   <div className="flex-1 p-44 gap-4">
-    //     <div className="flex items-center  ">
-    //       <span className="w-full max-w-40">Activity Type : </span>
-    //       <Dropdown
-    //         options={activityTypesOptions}
-    //         onSelect={handleTypeChanged}
-    //         value={type}
-    //       />
-    //     </div>
-    //     <div className="flex items-center">
-    //       <span className="w-full max-w-40">Title : </span>
-    //       <textarea
-    //         type="text"
-    //         value={title}
-    //         style={{ width: "320px", height: "80px" }}
-    //         onChange={handleTitleChange}
-    //         placeholder="Your activity title..."
-    //       />
-    //     </div>
-    //     <div className="flex  items-center">
-    //       <span className="w-full max-w-40">Country : </span>
-    //       <Dropdown
-    //         options={countries}
-    //         onSelect={handleCountryChange}
-    //         value={country == null ? activity.country : country}
-    //       />
-    //     </div>
-    //     <div className="flex  items-center">
-    //       <span className="w-full max-w-40">City : </span>
-    //       <Dropdown
-    //         options={cities}
-    //         onSelect={handleCityChange}
-    //         value={city == null ? activity.city : city}
-    //       />
-    //     </div>
-    //     <div className="flex justify-center gap-3 pt-10">
-    //       <button className="w-20 h-8 rounded-md   bg-blue-accent hover:bg-blue-accent-hover text-default-text ">
-    //         Save
-    //       </button>
-    //       <button className="w-20 h-8 rounded-md   bg-activityList hover:bg-activityList-hover text-default-text ">
-    //         Cancel
-    //       </button>
-    //     </div>
-    //   </div>
-    //   <div className="flex-1 p-10 pr-32 ">
-    //     {coordinates && (
-    //       <ClientMap
-    //         fullTrackCoords={coordinates}
-    //         selectedKmCoords={[]}
-    //         hoveredKmCoords={[]}
-    //         locationCoords={[locationLat, locationLong]}
-    //       />
-    //     )}
-    //   </div>
-    // </div>
   );
 }
 

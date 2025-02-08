@@ -4,7 +4,8 @@ import L from "leaflet";
 const LocationAndRadiusMarkers = ({ data }) => {
   const map = useMap();
 
-  if (data.length < 1) return;
+  if (data.length < 1 || (data.length == 2 && data[0] == 0 && data[1] == 0))
+    return; //if data is null or contains lagitude and longitude of 0, return.
 
   //if there already are the start and finish markers, no need to add them to the map.
   // there are search with the "icon" attribute in the layers. It is assumed these markers are the only one in the map.

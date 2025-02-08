@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Dropdown = ({ options, onSelect, value }) => {
+const Dropdown = ({ options, onSelect, value, name }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filterText, setFilterText] = useState("");
   const dropdownRef = useRef(null);
@@ -49,8 +49,8 @@ const Dropdown = ({ options, onSelect, value }) => {
       <button
         //size={30}
         onClick={toggleDropdown}
-        //buttonText={filterText}
-        className="w-80 h-8 rounded-md   bg-activityList text-default-text  m-1 p-1 text-start "
+        name={name}
+        className=" w-80 h-8 rounded-md   bg-activityList text-default-text  m-1 p-1 text-start "
       >
         {value}
       </button>
@@ -68,7 +68,7 @@ const Dropdown = ({ options, onSelect, value }) => {
         />
       )}
 
-      {isOpen && filteredOptions.length > 0 && (
+      {isOpen && (
         <div className="absolute flex flex-col w-96  z-10 border rounded-md  bg-activityList">
           <input
             type="text"
@@ -77,22 +77,22 @@ const Dropdown = ({ options, onSelect, value }) => {
             onChange={handleFilterChange}
             className="h-10  border border-white "
           />
-          <ul className="w-full h-full max-h-64 pb-3 bg-activityList overflow-auto">
-            {filteredOptions.map((option) => (
-              <li
-                key={option}
-                onClick={() => handleOptionClick(option)}
-                className="px-3 py-2 hover:bg-activityList-hover cursor-pointer"
-              >
-                {option}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {isOpen && filteredOptions.length === 0 && (
-        <div className="absolute flex  w-96  z-10 border rounded-md  bg-activityList">
-          <span className="p-2">No options </span>
+          {filteredOptions.length > 0 && (
+            <ul className="w-full h-full max-h-64 pb-3 bg-activityList overflow-auto">
+              {filteredOptions.map((option) => (
+                <li
+                  key={option}
+                  onClick={() => handleOptionClick(option)}
+                  className="px-3 py-2 hover:bg-activityList-hover cursor-pointer"
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+          {filteredOptions.length === 0 && (
+            <span className="p-2">No options </span>
+          )}
         </div>
       )}
     </div>

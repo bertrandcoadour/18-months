@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function getActivities(params) {
   try {
-    const { sport, subSport, sort_by, sort_order, search } = params;
+    const { sport, subSport, sort_by, sort_order, search } = await params;
 
     let query = {};
 
@@ -94,14 +94,15 @@ export async function updateActivityTitle(_id, newTitle) {
   }
 }
 
-export async function updateActivityType(_id, newType) {
+export async function updateActivityType(_id, newSport, newSubSport) {
   try {
     await prisma.Activity.update({
       where: {
         id: _id,
       },
       data: {
-        title: newTitle,
+        sport: newSport,
+        subSport: newSubSport,
       },
     });
 
@@ -121,6 +122,8 @@ export async function updateActivityCountry(_id, newCountry) {
         country: newCountry,
       },
     });
+
+    revalidatePath("/");
   } catch (error) {
     throw new Error(error.message);
   }
@@ -136,12 +139,9 @@ export async function updateActivityCity(_id, newCity) {
         city: newCity,
       },
     });
+
+    revalidatePath("/");
   } catch (error) {
     throw new Error(error.message);
   }
-}
-
-export async function submitActivityEditionForm(previousState, formData) {
-  console.log("inside submitting action...");
-  console.log(formData);
 }

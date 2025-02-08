@@ -1,6 +1,5 @@
 import { getActivityById } from "@/app/(actions)/activitiesActions";
 import Info from "@/app/(components)/Info";
-import { convertTimestampToDate } from "@/app/Utilities/Global/convertData";
 import { getActivityIcon } from "@/app/Utilities/Icons/Icons";
 import { info_to_display } from "@/app/Utilities/InfoToDisplay/InfoToDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,40 +8,37 @@ import { faPen, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 async function ActivityPage({ params }) {
-  const activity = await getActivityById(params.id);
+  const { id } = await params;
+  const activity = await getActivityById(id);
 
   return (
     <div className="flex flex-col h-full gap-2 p-4">
       <div className="flex  justify-between">
         <div className="flex items-center gap-14">
-          <span className="self-center pl-3">
+          <span className="pl-3">
             <FontAwesomeIcon
               size="2xl"
               icon={getActivityIcon(activity.sport, activity.subSport)}
             />
           </span>
-          <span className="text-3xl font-normal self-center">
-            {activity.title}
-          </span>
+          <span className="text-3xl font-normal">{activity.title}</span>
           <div className="flex gap-2">
             <FontAwesomeIcon
               className="self-center"
               icon={faLocationDot}
               size="xl"
             />
-            <span className="text-xl font-normal self-center">
+            <span className="text-xl font-normal">
               {activity.city + ", " + activity.country}
             </span>
           </div>
         </div>
         <Link
-          className="hover:cursor-pointer hover:text-slate-900"
+          className="self-center hover:cursor-pointer hover:text-slate-900"
           href={`/activities/${activity.id}/edit`}
         >
-          <FontAwesomeIcon
-            icon={faPen}
-            className="hover:cursor-pointer hover:text-gray-800 self-center"
-          />
+          <label className="pr-2 hover:cursor-pointer">Modify</label>
+          <FontAwesomeIcon icon={faPen} />
         </Link>
       </div>
       <hr className="h-px border-1 bg-activityList mb-2" />
