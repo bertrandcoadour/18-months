@@ -9,6 +9,9 @@ export async function getCountryShape(countryName) {
       where: {
         name: countryName,
       },
+      select: {
+        shape: true,
+      },
     });
   } catch (error) {
     throw new Error(error.message);

@@ -191,22 +191,20 @@ export function getCitiesWithinKilometers(
   return citiesWithinRadius;
 }
 
-export function getVisitiedCountries(activities) {
-  const countries = new Set();
-
-  // const allCities = cityParser();
-  // const countryCode = countryCodeParser();
-
-  activities.forEach((activity) => {
-    const lat = activity?.necLat * (180 / Math.pow(2, 31));
-    const long = activity?.necLong * (180 / Math.pow(2, 31));
-
-    // if (lat != 0 && long != 0) {
-    //   let info = getNearestCity(allCities, countryCode, lat, long);
-    //   countries.add(info.country);
-    //   console.log(info);
-    // }
-  });
-
-  return countries;
+export function getCountryColor(occurences) {
+  return occurences > 500
+    ? "#800026"
+    : occurences > 200
+    ? "#BD0026"
+    : occurences > 100
+    ? "#E31A1C"
+    : occurences > 50
+    ? "#FC4E2A"
+    : occurences > 20
+    ? "#FD8D3C"
+    : occurences > 10
+    ? "#FEB24C"
+    : occurences > 5
+    ? "#FED976"
+    : "#FFEDA0";
 }

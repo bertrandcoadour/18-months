@@ -1,10 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
+import { getActivitiesCountries } from "@/app/(actions)/activitiesActions";
 
-function MapBlock({ activities }) {
+function MapBlock() {
+  const [countries, setCountries] = useState([]);
+
   const ClientMap = useMemo(
     () =>
       dynamic(() => import("./WorldMap"), {
@@ -14,8 +17,14 @@ function MapBlock({ activities }) {
     []
   );
 
-  let countries = [];
-  //let countries = ["France", "Argentina", "Peru", "Indonesia"];
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const fetchedCountries = await getActivitiesCountries();
+      setCountries([...fetchedCountries]);
+    };
+
+    fetchCountries();
+  }, []);
 
   return (
     <div className="flex flex-col gap-2">

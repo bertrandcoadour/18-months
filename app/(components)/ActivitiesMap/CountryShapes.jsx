@@ -1,31 +1,122 @@
 import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
+import { getCountryColor } from "@/app/Utilities/map/mapUtilities";
+import "./CustomInfo.css";
 
-const CountryShapes = ({ data }) => {
+const CountryShapes = ({ shapes, countries }) => {
   const map = useMap();
 
-  data.forEach((shape) => {
-    console.log(shape);
-    L.geoJson(shape.shape).addTo(map);
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToFeature,
+    });
+  };
+
+  const highlightFeature = (e) => {
+    var layer = e.target;
+
+    layer.setStyle({
+      weight: 5,
+      color: "#666",
+      dashArray: "",
+      fillOpacity: 0.7,
+    });
+
+    layer.bringToFront();
+
+    let country = countriesToDisplay.find(
+      (country) => country.entryName == layer.feature.properties.ADMIN
+    );
+
+    if (country) {
+      info.update({
+        name: country.entryName,
+        occurences: country.entryOccurences,
+      });
+    }
+  };
+
+  const resetHighlight = (e) => {
+    var layer = e.target;
+
+    layer.setStyle({
+      weight: 1,
+      opacity: 1,
+      color: "white",
+      dashArray: "1",
+      fillOpacity: 0.7,
+    });
+
+    layer.bringToBack();
+
+    info.update();
+  };
+
+  const zoomToFeature = (e) => {
+    map.fitBounds(e.target.getBounds());
+  };
+
+  //declare a control from an info panel on the map
+  const info = L.control();
+
+  info.onAdd = function (map) {
+    this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
+    this.update();
+    return this._div;
+  };
+
+  // method that we will use to update the control based on props passed
+  info.update = function (props) {
+    this._div.innerHTML =
+      "<h4>Activities per country</h4>" +
+      (props
+        ? "<b>" + props.name + " : </b>" + props.occurences + " activities"
+        : "Hover over a country");
+  };
+
+  //get the countries whose shapes are already displayed in the map
+  const displayedCoutries = [];
+  map.eachLayer((layer) => {
+    if (layer.feature) {
+      displayedCoutries.push(layer.feature.properties.ADMIN);
+    }
   });
 
-  //console.log("in shape component : ", data);
+  //by comparing the shapes alreadt displayed with the countries in the props, get the countries' shapes to be displayed
+  const countriesToDisplay = [];
+  countries.forEach((country) => {
+    if (!displayedCoutries.find((c) => c == country.entryName))
+      countriesToDisplay.push(country);
+  });
 
-  // for (const shape in data) {
-  //   console.log("in shape component : ", shape);
-  //   //L.geoJson(shape.shape).addTo(map);
-  // }
+  if (countriesToDisplay.length < 1) return; //no shape left to display, return
 
-  // //add the new geoJSON layer to build the new segment
-  // useEffect(() => {
-  //   data.forEach((shape) => {
-  //     console.log(shape);
-  //     L.geoJson(shape.shape).addTo(map);
-  //   });
-  // }, [data, map]);
+  useEffect(() => {
+    shapes.forEach((shape) => {
+      let country = countriesToDisplay.find(
+        (country) => country.entryName == shape.shape.properties.ADMIN
+      );
+      if (country) {
+        var myStyle = {
+          fillColor: getCountryColor(country.entryOccurences),
+          weight: 2,
+          opacity: 1,
+          color: "white",
+          dashArray: "3",
+          fillOpacity: 0.7,
+        };
+        L.geoJson(shape.shape, {
+          style: myStyle,
+          onEachFeature: onEachFeature,
+        }).addTo(map);
 
-  //L.geoJson(data).addTo(map);
+        info.addTo(map);
+      }
+    });
+  }, [shapes, map]);
 
   return null;
 };

@@ -3,21 +3,17 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import CountryShapes from "./CountryShapes";
 import { getCountryShape } from "@/app/(actions)/countriesActions";
+import CustomLegend from "./CustomLegend";
 
 export default function WorldMap({ countries }) {
   const [center, setCenter] = useState([0, 0]);
   const [zoom, setZoom] = useState(2); // Default zoom level
   const [shapes, setShapes] = useState([]);
 
-  //let countriesToDisplay = ["France, Argentina"];
-  //const shapes = [];
-
   useEffect(() => {
     const fetchShapes = async () => {
-      // const newShapes = [];
-
       const getShape = async (country) => {
-        return await getCountryShape(country); // API call
+        return await getCountryShape(country.entryName); // API call
       };
 
       if (countries && countries.length > 0) {
@@ -38,7 +34,7 @@ export default function WorldMap({ countries }) {
     };
 
     fetchShapes(); // Call the inner async function
-  }, [countries]); // Empty dependency array ensures this runs only once
+  }, [countries]); // fetch every time countries change
 
   return (
     <MapContainer
@@ -51,7 +47,8 @@ export default function WorldMap({ countries }) {
       }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <CountryShapes data={shapes} />
+      <CountryShapes shapes={shapes} countries={countries} />
+      <CustomLegend />
     </MapContainer>
   );
 }

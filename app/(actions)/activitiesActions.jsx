@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { countOccurencesOfEntries } from "../Utilities/Global/arrayManipulation";
 
 export async function getActivities(params) {
   try {
@@ -143,5 +144,27 @@ export async function updateActivityCity(_id, newCity) {
     revalidatePath("/");
   } catch (error) {
     throw new Error(error.message);
+  }
+}
+
+export async function getActivitiesCountries() {
+  try {
+    const allCountries = await prisma.Activity.findMany({
+      select: {
+        country: true, // Only select the country related to each activity
+      },
+    });
+
+    const flattenCountries = allCountries
+      .flatMap((country) => country.country)
+      .filter((country) => country != null);
+
+    return countOccurencesOfEntries(flattenCountries);
+    //console.log("country count : ", countriesCount);
+
+    //return new Set(flattenCountries);
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    throw error; // Re-throw the error for handling outside if needed
   }
 }
