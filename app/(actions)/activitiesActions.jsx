@@ -3,6 +3,7 @@
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { countOccurencesOfEntries } from "../Utilities/Global/arrayManipulation";
+import { convertMetersToKms } from "../Utilities/Global/convertData";
 
 export async function getActivities(params) {
   try {
@@ -160,11 +161,110 @@ export async function getActivitiesCountries() {
       .filter((country) => country != null);
 
     return countOccurencesOfEntries(flattenCountries);
-    //console.log("country count : ", countriesCount);
-
-    //return new Set(flattenCountries);
   } catch (error) {
     console.error("Error fetching countries:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function walkingActivitiesCount() {
+  try {
+    const walkingActivities = await prisma.Activity.findMany({
+      where: {
+        sport: "walking",
+        subSport: "generic",
+      },
+      select: {
+        id: true, // Only select the id related to each activity
+      },
+    });
+
+    return walkingActivities.length;
+  } catch (error) {
+    console.error("Error fetching walking activities:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function runningActivitiesCount() {
+  try {
+    const runningActivities = await prisma.Activity.findMany({
+      where: {
+        sport: "running",
+      },
+      select: {
+        id: true, // Only select the id related to each activity
+      },
+    });
+
+    return runningActivities.length;
+  } catch (error) {
+    console.error("Error fetching running activites:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function cyclingActivitiesCount() {
+  try {
+    const cyclingActivities = await prisma.Activity.findMany({
+      where: {
+        sport: "cycling",
+        subSport: "generic",
+      },
+    });
+
+    return cyclingActivities.count;
+  } catch (error) {
+    console.error("Error fetching cycling activities:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function walkingActivitiesTotalDistance() {
+  try {
+    const walkingActivitiesDistance = await prisma.Activity.findMany({
+      where: {
+        sport: "walking",
+        subSport: "generic",
+      },
+      select: {
+        totalDistance: true, // Only select the country related to each activity
+      },
+    });
+
+    const total = walkingActivitiesDistance.reduce(
+      (accumulator, currentValue) =>
+        accumulator + convertMetersToKms(currentValue.totalDistance),
+      0
+    );
+
+    return Math.round(total);
+  } catch (error) {
+    console.error("Error fetching total walking distance:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function runningActivitiesTotalDistance() {
+  try {
+    const runningActivitiesDistance = await prisma.Activity.findMany({
+      where: {
+        sport: "running",
+      },
+      select: {
+        totalDistance: true, // Only select the country related to each activity
+      },
+    });
+
+    const total = runningActivitiesDistance.reduce(
+      (accumulator, currentValue) =>
+        accumulator + convertMetersToKms(currentValue.totalDistance),
+      0
+    );
+
+    return Math.round(total);
+  } catch (error) {
+    console.error("Error fetching total running distance:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
 }

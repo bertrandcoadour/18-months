@@ -37,7 +37,7 @@ async function ActivityPage({ params }) {
           className="self-center hover:cursor-pointer hover:text-slate-900"
           href={`/activities/${activity.id}/edit`}
         >
-          <label className="pr-2 hover:cursor-pointer">Modify</label>
+          <label className="pr-2 hover:cursor-pointer">Edit</label>
           <FontAwesomeIcon icon={faPen} />
         </Link>
       </div>
