@@ -85,14 +85,12 @@ const CountryShapes = ({ shapes, countries }) => {
     }
   });
 
-  //by comparing the shapes alreadt displayed with the countries in the props, get the countries' shapes to be displayed
+  //by comparing the shapes already displayed with the countries in the props, get the countries' shapes to be displayed
   const countriesToDisplay = [];
   countries.forEach((country) => {
     if (!displayedCoutries.find((c) => c == country.entryName))
       countriesToDisplay.push(country);
   });
-
-  if (countriesToDisplay.length < 1) return; //no shape left to display, return
 
   useEffect(() => {
     shapes.forEach((shape) => {

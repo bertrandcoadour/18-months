@@ -42,7 +42,7 @@ export default function WorldMap({ countries }) {
       zoom={zoom}
       scrollWheelZoom={true}
       style={{
-        height: "700px",
+        height: "800px",
         backgroundColor: "grey",
       }}
     >
