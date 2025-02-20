@@ -8,7 +8,8 @@ import {
   updateActivitiesTitle,
 } from "../Utilities/map/mapUtilities";
 
-export default async function WorldMap() {
+export default async function WorldMap({ searchParams }) {
+  const params = await searchParams;
   //const activities = await getActivities({});
 
   //const rslt = await updateActivitiesCountryAndCity(activities, cities);
@@ -20,7 +21,7 @@ export default async function WorldMap() {
         <MapBlock />
       </div>
       <div className="flex-1">
-        <GeneralInfoBlock />
+        <GeneralInfoBlock selectedCountry={params.country} />
       </div>
     </div>
   );

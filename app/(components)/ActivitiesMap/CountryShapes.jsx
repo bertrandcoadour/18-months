@@ -4,7 +4,7 @@ import L from "leaflet";
 import { getCountryColor } from "@/app/Utilities/map/mapUtilities";
 import "./CustomInfo.css";
 
-const CountryShapes = ({ shapes, countries }) => {
+const CountryShapes = ({ shapes, countries, countryClicked }) => {
   const map = useMap();
 
   const onEachFeature = (feature, layer) => {
@@ -56,7 +56,10 @@ const CountryShapes = ({ shapes, countries }) => {
   };
 
   const zoomToFeature = (e) => {
-    map.fitBounds(e.target.getBounds());
+    var layer = e.target;
+
+    map.fitBounds(layer.getBounds());
+    countryClicked(layer.feature.properties.ADMIN);
   };
 
   //declare a control from an info panel on the map

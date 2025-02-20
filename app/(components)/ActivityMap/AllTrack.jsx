@@ -5,17 +5,28 @@ import L from "leaflet";
 const AllTrack = ({ data }) => {
   const map = useMap();
 
+  // //remove each layer associated with a segment if there is one already
+  // map.eachLayer((layer) => {
+  //   if (layer.feature) {
+  //     if (layer.feature.properties.name == "All track") {
+  //       map.removeLayer(layer);
+  //     }
+  //   }
+  // });
+
   //if there is already the full track layer, no need to add it to the map
   var layers = [];
   map.eachLayer((layer) => {
     if (layer.feature) layers.push(layer);
   });
 
-  //console.log("size of layers : ", layers.length);
+  console.log(layers);
+
+  // console.log(layers);
 
   if (
     layers.length > 0 &&
-    layers.find((l) => l.feature.properties.name === "All track") != -1
+    layers.find((l) => l.feature.properties.name === "All track")
   )
     return;
 
@@ -25,23 +36,15 @@ const AllTrack = ({ data }) => {
     opacity: 0.65,
   };
 
-  L.geoJSON(data, {
-    style: myStyle,
-  }).addTo(map);
-
   // useEffect(() => {
-  //   var myStyle = {
-  //     color: "#ff0008",
-  //     weight: 3,
-  //     opacity: 0.65,
-  //   };
-
-  //   console.log("adding layer...");
-
   //   L.geoJSON(data, {
   //     style: myStyle,
   //   }).addTo(map);
   // }, [data, map]);
+
+  L.geoJSON(data, {
+    style: myStyle,
+  }).addTo(map);
 
   return null;
 };

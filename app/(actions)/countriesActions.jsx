@@ -88,11 +88,44 @@ export async function getAllCountries() {
   try {
     return await prisma.Country.findMany({
       select: {
-        name: true, // Only select the cities related to each country
+        name: true, // Only select the name of each country
       },
     });
   } catch (error) {
     console.error("Error fetching countries:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function getCountryCapital(countryName) {
+  try {
+    const country = await prisma.country.findUnique({
+      where: { name: countryName },
+      include: { cities: true }, // Include the cities related to the country
+    });
+
+    if (!country) {
+      return { error: `Country "${countryName}" not found.` };
+    }
+
+    // Find the capital city within the included cities
+    const capital = country.cities.find(
+      (city) => city.name === country.capital
+    );
+
+    if (!capital) {
+      return {
+        error: `Capital "${country.capital}" not found for ${countryName}.`,
+      };
+    }
+
+    return {
+      capital: capital.name,
+      latitude: capital.latitude,
+      longitude: capital.longitude,
+    };
+  } catch (error) {
+    console.error("Error fetching country capital:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
 }

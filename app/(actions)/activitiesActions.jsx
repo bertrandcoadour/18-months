@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { countOccurencesOfEntries } from "../Utilities/Global/arrayManipulation";
 import { convertMetersToKms } from "../Utilities/Global/convertData";
+import { getAllCoordinates } from "../Utilities/charts/chartUtilities";
 
 export async function getActivities(params) {
   try {
@@ -265,6 +266,45 @@ export async function runningActivitiesTotalDistance() {
     return Math.round(total);
   } catch (error) {
     console.error("Error fetching total running distance:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function getActivitiesInCountry(countryName) {
+  try {
+    return await prisma.Activity.findMany({
+      where: {
+        country: countryName,
+      },
+      omit: {
+        records: true,
+        laps: true,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching activities in :", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
+export async function getActivitiyCoords(_id) {
+  try {
+    const activityCoords = await prisma.Activity.findUnique({
+      where: {
+        id: _id,
+      },
+      select: {
+        records: true, // Only select the record in the activity found
+      },
+    });
+
+    if (activityCoords.length < 1) {
+      return { error: `Records in activity "${_id}" not found.` };
+    }
+
+    return getAllCoordinates(activityCoords.records);
+  } catch (error) {
+    console.error("Error fetching activity records in :", error);
     throw error; // Re-throw the error for handling outside if needed
   }
 }
