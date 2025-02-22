@@ -32,10 +32,6 @@ export default function CountryMap({ countryShape, activities }) {
     subSport: activity.subSport,
   }));
 
-  useEffect(() => {
-    console.log("activityTracks inside useEffect", activityTracks);
-  }, [activityTracks]);
-
   const handleMarkerClicked = (marker) => {
     const markerId = marker.options.id;
 
@@ -71,7 +67,6 @@ export default function CountryMap({ countryShape, activities }) {
         );
 
         if (existingIndex > -1) {
-          console.log("removing...");
           // Feature already exists, remove it
           const newFeatures = [...prevFeatures]; // Create a copy
           newFeatures.splice(existingIndex, 1);
@@ -79,10 +74,7 @@ export default function CountryMap({ countryShape, activities }) {
           return newFeatures;
         } else {
           // Feature doesn't exist, add it
-          console.log("adding...");
-
           const newFeatures = [...prevFeatures, fullTrackGeojsonFeature];
-
           return newFeatures;
         }
       });
@@ -98,7 +90,7 @@ export default function CountryMap({ countryShape, activities }) {
       minZoom={2}
       scrollWheelZoom={true}
       style={{
-        height: "800px",
+        height: "850px",
         backgroundColor: "grey",
       }}
     >
