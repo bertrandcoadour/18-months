@@ -72,9 +72,9 @@ const ActivityMarkers = ({ data, markerClicked }) => {
   };
 
   useEffect(() => {
-    const walkingActivities = [];
-    const runningActivities = [];
-    const cyclingActivities = [];
+    // const walkingActivities = [];
+    // const runningActivities = [];
+    // const cyclingActivities = [];
 
     markersToDisplay.forEach((d) => {
       const marker = L.marker([d.latitude, d.longitude], {
@@ -87,16 +87,16 @@ const ActivityMarkers = ({ data, markerClicked }) => {
         sport: d.sport,
         subSport: d.subSport,
         distance: d.distance,
-      }); //.bindPopup(d.title + " " + d.date + " " + d.distance)
+      }).addTo(map); //.bindPopup(d.title + " " + d.date + " " + d.distance)
 
-      const type = getActivityDescription(
-        marker.options.sport,
-        marker.options.subSport
-      );
+      // const type = getActivityDescription(
+      //   marker.options.sport,
+      //   marker.options.subSport
+      // );
 
-      type === "Walking" && walkingActivities.push(marker);
-      type === "Running" && runningActivities.push(marker);
-      type === "Cycling" && cyclingActivities.push(marker);
+      // type === "Walking" && walkingActivities.push(marker);
+      // type === "Running" && runningActivities.push(marker);
+      // type === "Cycling" && cyclingActivities.push(marker);
 
       marker.on("click", (e) => {
         const clickedMarker = e.target;
@@ -120,30 +120,29 @@ const ActivityMarkers = ({ data, markerClicked }) => {
       });
     });
 
-    if (data.length > 0) {
-      let walkGroup = L.layerGroup(walkingActivities, {
-        id: "Activities",
-      });
-      let runGroup = L.layerGroup(runningActivities, {
-        id: "Activities",
-      });
-      let cycleGroup = L.layerGroup(cyclingActivities, {
-        id: "Activities",
-      });
+    // if (data.length > 0) {
+    //   let walkGroup = L.layerGroup(walkingActivities, {
+    //     id: "Activities",
+    //   });
+    //   let runGroup = L.layerGroup(runningActivities, {
+    //     id: "Activities",
+    //   });
+    //   let cycleGroup = L.layerGroup(cyclingActivities, {
+    //     id: "Activities",
+    //   });
 
-      walkGroup.addTo(map);
-      runGroup.addTo(map);
-      cycleGroup.addTo(map);
+    // walkGroup.addTo(map);
+    // runGroup.addTo(map);
+    // cycleGroup.addTo(map);
 
-      let overlayMaps = {
-        "Walking activities": walkGroup,
-        "Running activities": runGroup,
-        "Cycling activities": cycleGroup,
-      }; // console.log("adding info");
+    // let overlayMaps = {
+    //   "Walking activities": walkGroup,
+    //   "Running activities": runGroup,
+    //   "Cycling activities": cycleGroup,
+    // };
 
-      L.control.layers(null, overlayMaps).addTo(map);
-      info.addTo(map);
-    }
+    //L.control.layers(null, overlayMaps).addTo(map);
+    markersToDisplay.length > 0 && info.addTo(map);
   }, [map, markersToDisplay]);
 
   return null;

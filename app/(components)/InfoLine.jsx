@@ -7,7 +7,7 @@ import {
   convertTimestampToDate,
 } from "../Utilities/Global/convertData";
 
-export default function Info({ activity, title, subTitle, unit }) {
+export default function InfoLine({ activity, title, subTitle, unit }) {
   function getValue() {
     switch (title) {
       case "timestamp":

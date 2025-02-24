@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { getActivityIcon } from "../Utilities/Icons/Icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { info_to_display } from "../Utilities/InfoToDisplay/InfoToDisplay";
-import Info from "./Info";
+import InfoLine from "./InfoLine";
 import DeleteBlock from "./DeleteBlock";
 import { getGPXById } from "../(actions)/GPX/GPXActions";
 
@@ -51,7 +51,7 @@ function ActivityList({ allActivitiesCount, activities, searchCount }) {
                   activity.sport === info.sport &&
                   activity.subSport === info.subSport &&
                   info.items.map((item, index) => (
-                    <Info
+                    <InfoLine
                       key={index}
                       activity={activity}
                       title={item.title}

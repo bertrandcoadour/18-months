@@ -1,5 +1,5 @@
 import { getActivityById } from "@/app/(actions)/activitiesActions";
-import Info from "@/app/(components)/Info";
+import InfoLine from "@/app/(components)/InfoLine";
 import { getActivityIcon } from "@/app/Utilities/Icons/Icons";
 import { info_to_display } from "@/app/Utilities/InfoToDisplay/InfoToDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,7 +50,7 @@ async function ActivityPage({ params }) {
               activity.sport === info.sport &&
               activity.subSport === info.subSport &&
               info.items.map((item, index) => (
-                <Info
+                <InfoLine
                   key={index}
                   activity={activity}
                   title={item.title}
