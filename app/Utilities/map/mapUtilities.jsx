@@ -90,62 +90,6 @@ export function convertFitToStandardCoord(fitCoord) {
   return fitCoord * (180 / Math.pow(2, 31));
 }
 
-export async function updateActivitiesCountryAndCity(activities, cities) {
-  let count = 0;
-
-  for (const activity of activities) {
-    console.log("updating activity : ", count);
-
-    if (activity.necLat && activity.necLong) {
-      let rslt = getNearestCity(
-        cities,
-        convertFitToStandardCoord(activity.necLat),
-        convertFitToStandardCoord(activity.necLong)
-      );
-
-      if (rslt) {
-        try {
-          await updateActivityCity(activity.id, rslt.city);
-          const country = await getCountryName(rslt.country);
-          await updateActivityCountry(activity.id, country.name);
-          await updateActivityTitle(
-            activity.id,
-            activity.sport +
-              " activity, " +
-              activity?.city +
-              ", " +
-              activity?.country
-          );
-        } catch (error) {
-          throw new Error(error.message);
-        }
-      }
-    }
-
-    count += 1;
-  }
-
-  return 0;
-}
-
-export async function updateActivitiesTitle(activities) {
-  let count = 0;
-
-  for (const activity of activities) {
-    console.log("updating activity : ", count);
-
-    try {
-      await updateActivityTitle(activity.id, activity.sport + " activity");
-    } catch (error) {
-      throw new Error(error.message);
-    }
-
-    count += 1;
-  }
-
-  return 0;
-}
-
 export function getNearestCity(cities, lat, long) {
   let nearestCity = null;
   let countryCode = null;

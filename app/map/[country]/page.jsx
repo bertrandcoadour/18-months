@@ -6,7 +6,7 @@ export default async function CountryMap({ params }) {
   return (
     <div className="flex flex-row gap-2">
       <div className="flex-1">
-        <MapBlock country={country} />
+        <MapBlock country={decodeURIComponent(country)} />
       </div>
       <div className="flex-1"></div>
     </div>

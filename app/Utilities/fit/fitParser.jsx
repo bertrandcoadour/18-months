@@ -1,22 +1,15 @@
 import { Decoder, Stream, Profile, Utils } from "@garmin/fitsdk";
 import * as fs from "node:fs";
 import prisma from "@/lib/db";
+import { convertFitToStandardCoord, getNearestCity } from "../map/mapUtilities";
+import {
+  getActivities,
+  updateActivityCity,
+  updateActivityCountry,
+} from "@/app/(actions)/activitiesActions";
+import { getAllCities, getCountryName } from "@/app/(actions)/countriesActions";
 
-// export function countriesContoursParser() {
-//   try {
-//     //fs.readFileSync("data/WorldMap/countriesContours.json");
-//     const path = "data/WorldMap/countriesContours.json";
-//     //const buf = fs.readFileSync(path);
-
-//     const data = JSON.parse(fs.readFileSync(path));
-//     //console.log(data);
-//     return data;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// }
-
-export function fitParser(fitFilesDir) {
+export async function fitParser(fitFilesDir) {
   if (fitFilesDir == "") return;
 
   fs.readdir(fitFilesDir, (err, files) => {
@@ -59,10 +52,6 @@ export function parseFitFile(fitFilePath) {
 
   const onMesg = (messageNumber, message) => {
     if (Profile.types.mesgNum[messageNumber] === "record") {
-      //Object.keys(message).forEach((field) => recordFields.add(field));
-
-      message.timestamp = Utils.convertDateTimeToDate(message.timestamp);
-
       let msg = {
         timestamp: message.timestamp,
         positionLat: message?.positionLat,
@@ -187,13 +176,52 @@ export function parseFitFile(fitFilePath) {
 
   // console.log("record : ", recordMessages.at(50));
   // console.log("lap : ", lapMessages.at(2));
-  // console.log("session : ", sessionMessages.at(0));
+  //console.log("session : ", sessionMessages.at(0).country);
 
   return sessionMessages.at(0);
 }
 
 async function fillDataBase(data) {
-  const result = await prisma.Activity.create({
-    data: data,
-  });
+  try {
+    await prisma.Activity.create({
+      data: data,
+    });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function updateActivitiesCountryAndCity() {
+  const activities = await getActivities({});
+  const cities = await getAllCities();
+
+  let count = 0;
+
+  for (const activity of activities) {
+    if (!activity.country && !activity.city) {
+      console.log("updating activity : ", count);
+
+      if (activity.necLat && activity.necLong) {
+        let rslt = getNearestCity(
+          cities,
+          convertFitToStandardCoord(activity.necLat),
+          convertFitToStandardCoord(activity.necLong)
+        );
+
+        if (rslt) {
+          try {
+            await updateActivityCity(activity.id, rslt.city);
+            const country = await getCountryName(rslt.country);
+            await updateActivityCountry(activity.id, country.name);
+          } catch (error) {
+            throw new Error(error.message);
+          }
+        }
+      }
+
+      count += 1;
+    }
+  }
+
+  return 0;
 }

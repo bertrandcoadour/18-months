@@ -99,7 +99,6 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
     };
     const fetchCyclingDistance = async () => {
       const distance = await cyclingActivitiesTotalDistance();
-      console.log(distance);
       setCyclingDistance(distance);
     };
 

@@ -31,7 +31,7 @@ export default function WorldMap({ countries }) {
     };
 
     fetchShapes(); // Call the inner async function
-  }, [countries]); // fetch every time countries change
+  }, []); // only fetch when the component render
 
   const handleCountrySelected = useCallback((country) => {
     let currentQuery = {};
@@ -56,8 +56,39 @@ export default function WorldMap({ countries }) {
       { skipNull: true }
     );
 
+    //window.history.pushState({ path: url }, "", url);
     router.push(url);
   });
+
+  // useEffect(() => {
+  //   router.beforePopState(({ url, as, options }) => {
+  //     // I only want to allow these two routes!
+  //     if (as !== '/' && as !== '/other') {
+  //       // Have SSR render bad routes as a 404.
+  //       window.location.href = as
+  //       return false
+  //     }
+
+  //     return true
+  //   })
+  // }, [router])
+
+  // useEffect(() => {
+  //   const handlePopState = () => {
+  //     console.log("going back");
+  //     const currentParams = new URLSearchParams(window.location.search);
+  //     if (currentParams.has("country")) {
+  //       window.history.replaceState({ path: "/map" }, "", "/map");
+  //       router.replace("/map");
+  //     }
+  //   };
+
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, [router]);
 
   return (
     <MapContainer
