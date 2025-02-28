@@ -41,7 +41,6 @@ import {
   walkingActivitiesTotalDistance,
 } from "@/app/(actions)/activitiesActions";
 import InfoCard from "../InfoCard";
-import { Icon } from "leaflet";
 
 function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
   const [walkingDistance, setWalkingDistance] = useState(0);
@@ -90,31 +89,92 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
 
   useEffect(() => {
     const fetchRunningDistance = async () => {
-      const distance = await runningActivitiesTotalDistance();
-      setRunningDistance(distance);
+      try {
+        const res = await fetch("/api/activities/running/totalDistance", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch running total distance");
+        }
+        setRunningDistance(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch running total distance");
+      }
     };
+
     const fetchWalkingDistance = async () => {
-      const distance = await walkingActivitiesTotalDistance();
-      setWalkingDistance(distance);
+      try {
+        const res = await fetch("/api/activities/walking/totalDistance", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch walking total distance");
+        }
+        setWalkingDistance(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch walking total distance");
+      }
     };
     const fetchCyclingDistance = async () => {
-      const distance = await cyclingActivitiesTotalDistance();
-      setCyclingDistance(distance);
+      try {
+        const res = await fetch("/api/activities/cycling/totalDistance", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch cycling total distance");
+        }
+        setCyclingDistance(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch cycling total distance");
+      }
     };
 
     const fetchAvgRunningPace = async () => {
-      const avg = await runningActivitiesAvgPace();
-      setAvgRunningPace(avg);
+      try {
+        const res = await fetch("/api/activities/running/averagePace", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch average running pace");
+        }
+        setAvgRunningPace(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch average running pace");
+      }
     };
 
     const fetchWalkingTotalAscent = async () => {
-      const total = await walkingActivitiesTotalAscent();
-      setWalkingTotalAscent(total);
+      try {
+        const res = await fetch("/api/activities/walking/totalAscent", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch walking total ascent");
+        }
+        setWalkingTotalAscent(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch average running pace");
+      }
     };
 
     const fetchCyclingMaxSpeed = async () => {
-      const max = await cyclingActivitiesMaximumSpeed();
-      setCyclingMaxSpeed(max);
+      try {
+        const res = await fetch("/api/activities/cycling/maximumSpeed", {
+          method: "GET",
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch cycling maximum speed");
+        }
+        setCyclingMaxSpeed(await res.json());
+      } catch (error) {
+        throw new Error("Failed to fetch cycling maximum speed");
+      }
     };
 
     const fetchTotalTime = async () => {

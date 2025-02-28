@@ -18,7 +18,22 @@ export default function WorldMap({ countries }) {
   useEffect(() => {
     const fetchShapes = async () => {
       const getShape = async (country) => {
-        return await getCountryShape(country.entryName); // API call
+        try {
+          const res = await fetch(`/api/countryShape/${country?.entryName}`, {
+            cache: "force-cache",
+          });
+          if (!res.ok) {
+            if (res.status === 404) {
+              throw new Error("Country shape not found");
+            }
+            throw new Error("Failed to fetch country shape");
+          }
+
+          return await res.json();
+        } catch (error) {
+          console.error("Error fetching shape:", error);
+          return null; // or a default shape object
+        }
       };
 
       if (countries && countries.length > 0) {
@@ -31,7 +46,7 @@ export default function WorldMap({ countries }) {
     };
 
     fetchShapes(); // Call the inner async function
-  }, []); // only fetch when the component render
+  }, [countries]); // fetch every time countries prop changes
 
   const handleCountrySelected = useCallback((country) => {
     let currentQuery = {};
@@ -56,39 +71,8 @@ export default function WorldMap({ countries }) {
       { skipNull: true }
     );
 
-    //window.history.pushState({ path: url }, "", url);
     router.push(url);
   });
-
-  // useEffect(() => {
-  //   router.beforePopState(({ url, as, options }) => {
-  //     // I only want to allow these two routes!
-  //     if (as !== '/' && as !== '/other') {
-  //       // Have SSR render bad routes as a 404.
-  //       window.location.href = as
-  //       return false
-  //     }
-
-  //     return true
-  //   })
-  // }, [router])
-
-  // useEffect(() => {
-  //   const handlePopState = () => {
-  //     console.log("going back");
-  //     const currentParams = new URLSearchParams(window.location.search);
-  //     if (currentParams.has("country")) {
-  //       window.history.replaceState({ path: "/map" }, "", "/map");
-  //       router.replace("/map");
-  //     }
-  //   };
-
-  //   window.addEventListener("popstate", handlePopState);
-
-  //   return () => {
-  //     window.removeEventListener("popstate", handlePopState);
-  //   };
-  // }, [router]);
 
   return (
     <MapContainer

@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { cache } from "react";
 import { countOccurencesOfEntries } from "../Utilities/Global/arrayManipulation";
 import {
   convertMetersPerSecondsToPace,
@@ -152,7 +153,7 @@ export async function updateActivityCity(_id, newCity) {
   }
 }
 
-export async function getActivitiesCountries() {
+export const getActivitiesCountries = cache(async () => {
   try {
     const allCountries = await prisma.Activity.findMany({
       select: {
@@ -169,9 +170,9 @@ export async function getActivitiesCountries() {
     console.error("Error fetching countries:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
-}
+});
 
-export async function getActivitiesCities() {
+export const getActivitiesCities = cache(async () => {
   try {
     const allCities = await prisma.Activity.findMany({
       select: {
@@ -188,9 +189,9 @@ export async function getActivitiesCities() {
     console.error("Error fetching cities:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
-}
+});
 
-export async function getActivitiesTypes() {
+export const getActivitiesTypes = cache(async () => {
   try {
     const allTypes = await prisma.Activity.findMany({
       select: {
@@ -207,7 +208,7 @@ export async function getActivitiesTypes() {
     console.error("Error fetching types:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
-}
+});
 
 export async function walkingActivitiesCount() {
   try {

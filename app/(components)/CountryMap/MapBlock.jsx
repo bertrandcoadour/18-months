@@ -12,6 +12,7 @@ import { getCountryShape } from "@/app/(actions)/countriesActions";
 function MapBlock({ country }) {
   const [shape, setShape] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [error, setError] = useState(null);
 
   const ClientMap = useMemo(
     () =>
@@ -24,17 +25,49 @@ function MapBlock({ country }) {
 
   useEffect(() => {
     const fetchCountryShape = async () => {
-      const shape = await getCountryShape(country);
-      setShape(shape);
+      setError(null);
+
+      try {
+        const res = await fetch(`/api/countryShape/${country}`, {
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error("Country shape not found");
+          }
+          throw new Error("Failed to fetch country shape");
+        }
+
+        setShape(await res.json());
+      } catch (error) {
+        setError(err);
+      }
     };
+
     fetchCountryShape();
   }, [country]);
 
   useEffect(() => {
     const fetchActivities = async () => {
-      const activities = await getActivitiesInCountry(country);
-      setActivities(activities);
+      setError(null);
+
+      try {
+        const res = await fetch(`/api/activities/byCountry/${country}`, {
+          cache: "force-cache",
+        });
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error(`activities in ${country}  not found`);
+          }
+          throw new Error("Failed to fetch activities");
+        }
+
+        setActivities(await res.json());
+      } catch (error) {
+        setError(err);
+      }
     };
+
     fetchActivities();
   }, [country]);
 
