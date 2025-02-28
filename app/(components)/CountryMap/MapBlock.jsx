@@ -3,11 +3,6 @@
 import { useMemo, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
-import {
-  getActivitiesCountries,
-  getActivitiesInCountry,
-} from "@/app/(actions)/activitiesActions";
-import { getCountryShape } from "@/app/(actions)/countriesActions";
 
 function MapBlock({ country }) {
   const [shape, setShape] = useState(null);
@@ -17,7 +12,11 @@ function MapBlock({ country }) {
   const ClientMap = useMemo(
     () =>
       dynamic(() => import("./CountryMap"), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => (
+          <div className="flex items-center justify-center gap-2 mx-auto h-full">
+            <h3 className="font-semibold  py-2 px-4 ">Loading...</h3>
+          </div>
+        ),
         ssr: false,
       }),
     []

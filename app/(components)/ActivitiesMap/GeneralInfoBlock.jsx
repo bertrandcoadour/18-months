@@ -198,7 +198,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
       </h2>
 
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
-      <div className="lg:grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
           icon={faCloudArrowUp}
           title={totalOccurrences}
@@ -233,7 +233,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
 
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
 
-      <div className="lg:grid grid-cols-2 xl:grid-cols-3 p-2 pb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
           icon={faPersonRunning}
           title={getTypeOccurences("running")}
@@ -251,7 +251,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
         />
       </div>
 
-      <div className="lg:grid grid-cols-2 xl:grid-cols-3 p-2 pb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
           icon={faPersonHiking}
           title={getTypeOccurences("walking")}
@@ -268,7 +268,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
           subTitle={"total ascent (m)"}
         />
       </div>
-      <div className="lg:grid grid-cols-2 xl:grid-cols-3 p-2 pb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
           icon={faPersonBiking}
           title={getTypeOccurences("cycling")}

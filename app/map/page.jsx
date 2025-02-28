@@ -14,11 +14,11 @@ export default async function WorldMapPage({ searchParams }) {
   const fetchedTypes = await getActivitiesTypes();
 
   return (
-    <div className="flex flex-row gap-2">
-      <div className="flex-1">
+    <div className=" grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div>
         <MapBlock countries={[...fetchedCountries]} />
       </div>
-      <div className="flex-1">
+      <div>
         <GeneralInfoBlock
           countries={[...fetchedCountries]}
           cities={[...fetchedCities]}
