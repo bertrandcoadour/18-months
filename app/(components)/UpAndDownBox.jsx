@@ -13,8 +13,6 @@ function UpAndDownBox({ label, subLabel, selected, isAscending }) {
   const handleClick = useCallback(() => {
     let currentQuery = {};
 
-    console.log("into up and down");
-
     if (params) {
       currentQuery = qs.parse(params.toString());
     }

@@ -27,7 +27,7 @@ export default function InfoLine({ activity, title, subTitle, unit }) {
   }
 
   return (
-    <div className="w-full max-w-50 self-center">
+    <div className=" w-full max-w-60 min-w-44 self-start">
       <div className="text-start">{`${getValue()} ${unit ? unit : ""}`}</div>
       <div className="font-medium text-xs text-start">
         {subTitle ? subTitle : ""}

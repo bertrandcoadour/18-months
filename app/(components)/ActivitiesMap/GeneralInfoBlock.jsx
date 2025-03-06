@@ -286,7 +286,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
         />
       </div>
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
-      <div className="flex items-center justify-center gap-2 mx-auto h-full">
+      <div className="flex items-center justify-center gap-2 mx-auto h-full p-4">
         {!selectedCountry && (
           <div className="flex flex-col gap-4 ">
             <div className="flex flex-row gap-4">

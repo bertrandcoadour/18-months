@@ -4,8 +4,9 @@ import ActivityFilterBar from "../(components)/ActivityFilterBar";
 import React from "react";
 
 async function ActivitiesPage({ searchParams, searchCount }) {
-  const activities = await getActivities(searchParams);
-  const plainObjectActivities = JSON.parse(JSON.stringify(activities));
+  //const activities = await getActivities(searchParams);
+  //const plainObjectActivities = JSON.parse(JSON.stringify(activities));
+  const params = await searchParams;
 
   return (
     <div className="flex flex-col">
@@ -13,11 +14,7 @@ async function ActivitiesPage({ searchParams, searchCount }) {
         <ActivityFilterBar />
       </div>
 
-      <ActivityList
-        allActivitiesCount={await activitiesCount()}
-        activities={plainObjectActivities}
-        searchCount={searchCount}
-      />
+      <ActivityList params={params} />
     </div>
   );
 }
