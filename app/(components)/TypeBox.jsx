@@ -52,7 +52,7 @@ function TypeBox({ icon, label, subLabel, description, selected }) {
   return (
     <div
       onClick={handleClick}
-      className={`flex flex-col items-center justify-center gap-2 p-3 border-b-2 hover:text-neutral-500 transition cursor-pointer ${
+      className={`flex flex-col w-full max-w-20 items-center justify-center gap-2 p-3 border-b-2 hover:text-neutral-500 transition cursor-pointer ${
         selected ? "border-b-neutral-500" : "border-transparent"
       } ${selected ? "text-neutral-500" : "text-neutral-200"}`}
     >

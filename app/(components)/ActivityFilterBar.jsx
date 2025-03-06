@@ -18,31 +18,34 @@ function ActivityFilterBar() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row m-4">
-        {/* <h1 className="flex-grow text-3xl font-semibold self-center text-start">{`${
-          params.size > 0 && search == null ? sport : "all "
-        } activities`}</h1> */}
-        <h1 className="flex-grow text-3xl font-semibold self-center text-start">
-          Activities
-        </h1>
-        <div className="flex pr-6">
-          <SearchBar isActive={search} />
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="flex space-x-4">
+          <h1 className="p-2 ml-3 text-3xl font-semibold self-center text-start">
+            Activities
+          </h1>
         </div>
 
-        <div className=" flex flex-row">
-          {activity_types_icons.map(
-            (item, index) =>
-              item.label != "Not found" && (
-                <TypeBox
-                  key={index}
-                  icon={item.icon}
-                  label={item.label}
-                  subLabel={item.subLabel}
-                  description={item.description}
-                  selected={sport === item.label && subSport === item.subLabel}
-                />
-              )
-          )}
+        <div className=" flex flex-col lg:flex-row">
+          <div className="flex pr-4">
+            <SearchBar isActive={search} />
+          </div>
+          <div className="flex flex-row">
+            {activity_types_icons.map(
+              (item, index) =>
+                item.label != "Not found" && (
+                  <TypeBox
+                    key={index}
+                    icon={item.icon}
+                    label={item.label}
+                    subLabel={item.subLabel}
+                    description={item.description}
+                    selected={
+                      sport === item.label && subSport === item.subLabel
+                    }
+                  />
+                )
+            )}
+          </div>
         </div>
       </div>
 

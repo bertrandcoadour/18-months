@@ -5,24 +5,11 @@ import L from "leaflet";
 const AllTrack = ({ data }) => {
   const map = useMap();
 
-  // //remove each layer associated with a segment if there is one already
-  // map.eachLayer((layer) => {
-  //   if (layer.feature) {
-  //     if (layer.feature.properties.name == "All track") {
-  //       map.removeLayer(layer);
-  //     }
-  //   }
-  // });
-
   //if there is already the full track layer, no need to add it to the map
   var layers = [];
   map.eachLayer((layer) => {
     if (layer.feature) layers.push(layer);
   });
-
-  console.log(layers);
-
-  // console.log(layers);
 
   if (
     layers.length > 0 &&
