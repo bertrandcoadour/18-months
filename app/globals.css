@@ -26,7 +26,7 @@
     @apply text-sm text-default-text;
   }
   form {
-    @apply rounded-xl p-4;
+    @apply rounded-xl;
   }
   label {
     @apply mt-4;
@@ -43,7 +43,7 @@
     @apply text-default-text text-xl;
   }
   .btn {
-    @apply hover:no-underline bg-blue-accent hover:bg-blue-accent-hover text-center text-nav font-bold cursor-pointer uppercase px-4 py-2 rounded-md transition-colors block;
+    @apply hover:no-underline bg-blue-accent hover:bg-blue-accent-hover text-center text-nav font-bold cursor-pointer uppercase rounded-md transition-colors block;
   }
   .leaflet-container {
     @apply h-dvh w-dvw;

@@ -57,7 +57,7 @@ function TypeBox({ icon, label, subLabel, description, selected }) {
       } ${selected ? "text-neutral-500" : "text-neutral-200"}`}
     >
       <FontAwesomeIcon icon={icon} className="icon " />
-      <div className="font-medium text-xs">{description}</div>
+      <div className="font-medium text-xs max-md:hidden ">{description}</div>
     </div>
   );
 }

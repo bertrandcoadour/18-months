@@ -46,14 +46,14 @@ function UpAndDownBox({ label, subLabel, selected, isAscending }) {
   return (
     <div
       onClick={handleClick}
-      className={`flex flex-row w-full max-w-50  hover:text-neutral-500 transition cursor-pointer ${
+      className={`flex flex-row w-full max-w-60 min-w-44  hover:text-neutral-500 transition cursor-pointer ${
         selected ? "text-neutral-500" : "text-neutral-200"
       }`}
     >
       <div className="font-medium text-xs  p-2">{subLabel}</div>
       <FontAwesomeIcon
         icon={isUp ? faUpLong : faDownLong}
-        className=" pl-2 pt-5 text-sm"
+        className=" pl-2 pt-5 text-sm self-start"
       />
     </div>
   );

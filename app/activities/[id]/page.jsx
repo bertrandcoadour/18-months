@@ -13,57 +13,58 @@ async function ActivityPage({ params }) {
 
   return (
     <div className="flex flex-col h-full gap-2 p-4">
-      <div className="flex  justify-between">
-        <div className="flex items-center gap-14">
-          <span className="pl-3">
+      <div className="flex  justify-around md:justify-between">
+        <div className="flex lg:gap-14 md:gap-7 gap-5">
+          <span className="pl-3 self-center ">
             <FontAwesomeIcon
               size="2xl"
               icon={getActivityIcon(activity.sport, activity.subSport)}
             />
           </span>
-          <span className="text-3xl font-normal">{activity.title}</span>
-          <div className="flex gap-2">
-            <FontAwesomeIcon
-              className="self-center"
-              icon={faLocationDot}
-              size="xl"
-            />
-            <span className="text-xl font-normal">
-              {activity.city + ", " + activity.country}
+          <div className="flex flex-col  md:flex-row  gap-x-14">
+            <span className="text-xl md:text-2xl lg:text-3xl font-normal p-1">
+              {activity.title}
             </span>
+            <div className="flex gap-2 self-center ">
+              <div className="max-md:hidden p-1">
+                <FontAwesomeIcon icon={faLocationDot} size="xl" />
+              </div>
+
+              <span className="text-sm md:text-base lg:text-xl font-normal p-1">
+                {activity.city + ", " + activity.country}
+              </span>
+            </div>
           </div>
         </div>
         <Link
-          className="self-center hover:cursor-pointer hover:text-slate-900"
+          className="self-center hover:cursor-pointer hover:text-slate-900 pl-3"
           href={`/activities/${activity.id}/edit`}
         >
-          <label className="pr-2 hover:cursor-pointer">Edit</label>
+          <label className="pr-2 hover:cursor-pointer max-lg:hidden">
+            Edit
+          </label>
           <FontAwesomeIcon icon={faPen} />
         </Link>
       </div>
       <hr className="h-px border-1 bg-activityList mb-2" />
 
-      <div className="flex-1">
-        <div className="flex flex-row pb-2">
-          {info_to_display.map(
-            (info) =>
-              activity.sport === info.sport &&
-              activity.subSport === info.subSport &&
-              info.items.map((item, index) => (
-                <InfoLine
-                  key={index}
-                  activity={activity}
-                  title={item.title}
-                  subTitle={item.subTitle}
-                  unit={item.unit}
-                />
-              ))
-          )}
-        </div>
-        <div className="flex flex-col w-full max-w-4x gap-2">
-          <MapBlock activity={activity} />
-        </div>
+      <div className="grid grid-cols-3 md:grid-cols-6 pb-2">
+        {info_to_display.map(
+          (info) =>
+            activity.sport === info.sport &&
+            activity.subSport === info.subSport &&
+            info.items.map((item, index) => (
+              <InfoLine
+                key={index}
+                activity={activity}
+                title={item.title}
+                subTitle={item.subTitle}
+                unit={item.unit}
+              />
+            ))
+        )}
       </div>
+      <MapBlock activity={activity} />
     </div>
   );
 }

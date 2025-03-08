@@ -23,6 +23,7 @@ import {
   updateActivityType,
 } from "@/app/(actions)/activitiesActions";
 import { convertActivityTypeToDBType } from "@/app/Utilities/Global/convertData";
+import Loading from "../Loading";
 
 function ActivityEditionBlock({ activity }) {
   const router = useRouter();
@@ -54,7 +55,7 @@ function ActivityEditionBlock({ activity }) {
   const ClientMap = useMemo(
     () =>
       dynamic(() => import("./Map"), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => <Loading />,
         ssr: false,
       }),
     []
@@ -163,9 +164,9 @@ function ActivityEditionBlock({ activity }) {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
       <form
-        className="flex flex-col gap-6 w-1/3 p-6 overflow-auto"
+        className="flex flex-col gap-6  p-6 overflow-auto"
         action={handleSubmit}
       >
         <label className="text-3xl font-normal self-center">
@@ -237,7 +238,7 @@ function ActivityEditionBlock({ activity }) {
         </div>
       </form>
 
-      <div className="flex-1 p-10  ">
+      <div className="flex-1 p-5">
         {coordinates && (
           <ClientMap
             fullTrackCoords={coordinates}

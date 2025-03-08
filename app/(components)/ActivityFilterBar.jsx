@@ -19,17 +19,15 @@ function ActivityFilterBar() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col md:flex-row justify-between">
-        <div className="flex space-x-4">
-          <h1 className="p-2 ml-3 text-3xl font-semibold self-center text-start">
-            Activities
-          </h1>
-        </div>
+        <h1 className=" lg:p-4 md:p-3 p-1 text-lg md:text-2xl lg:text-3xl font-semibold text-start self-center">
+          Activities
+        </h1>
 
         <div className=" flex flex-col lg:flex-row">
-          <div className="flex pr-4">
+          <div className="flex lg:p-4 md:p-2 p-1 lg:self-center md:self-start self-center">
             <SearchBar isActive={search} />
           </div>
-          <div className="flex flex-row">
+          <div className="flex flex-row self-center lg:p-4 md:p-2 p-1">
             {activity_types_icons.map(
               (item, index) =>
                 item.label != "Not found" && (
@@ -50,10 +48,10 @@ function ActivityFilterBar() {
       </div>
 
       {sport && subSport && (
-        <div className="flex flex-row">
-          <div className="w-full max-w-20" />
-          <div className="w-full max-w-xl" />
-          <div className="flex flex-grow">
+        <div className="flex flex-row flex-grow max-lg:hidden">
+          <div className="w-full max-w-20 pl-2" />
+          <div className="w-full max-w-lg xl:shrink-0" />
+          <div className="grid grid-cols-6 flex-grow gap-x-12 pr-20">
             {info_to_display.map(
               (info) =>
                 sport === info.sport &&
@@ -68,6 +66,7 @@ function ActivityFilterBar() {
                   />
                 ))
             )}
+            <div className="w-full max-w-60 min-w-44"></div>
           </div>
         </div>
       )}

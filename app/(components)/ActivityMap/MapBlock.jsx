@@ -78,9 +78,9 @@ function MapBlock({ activity }) {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-2">
-        <div className="flex-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-rows-3 gap-3">
+        <div className="row-span-2">
           {coordinates && (
             <ClientMap
               fullTrackCoords={coordinates}
@@ -90,25 +90,26 @@ function MapBlock({ activity }) {
             />
           )}
         </div>
-        <div className="flex-1">
+        <div className="row-span-1">
+          <AltitudeChart data={altitudeData} />
+        </div>
+      </div>
+
+      <div className="grid grid-rows-3 gap-2">
+        <div>
           <PaceChart
             data={averagePaceData}
             onKmSelected={handleDistanceSelected}
             onKmHovered={handleDistanceHovered}
           />
+        </div>
+        <div>
           <ElevationGainLossChart
             data={ascentDescentData}
             onKmSelected={handleDistanceSelected}
             onKmHovered={handleDistanceHovered}
           />
         </div>
-      </div>
-
-      <div className="flex flex-row">
-        <div className="flex-1">
-          <AltitudeChart data={altitudeData} />
-        </div>
-        <div className="flex-1" />
       </div>
     </div>
   );
