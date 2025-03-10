@@ -3,7 +3,11 @@ import {
   updateActivityCountry,
   updateActivityTitle,
 } from "@/app/(actions)/activitiesActions";
-import { getAllCities, getCountryName } from "@/app/(actions)/countriesActions";
+import {
+  getAllCities,
+  getCitiesFromCountry,
+  getCountryName,
+} from "@/app/(actions)/countriesActions";
 
 export function getCenterOfCoordinates(coordinates) {
   let centerCoordinates = [];
@@ -119,7 +123,7 @@ export function getCitiesWithinKilometers(
 ) {
   let citiesWithinRadius = [];
 
-  cities.forEach((city) => {
+  cities.map((city) => {
     let distance = haversine(
       city.latitude,
       city.longitude,
@@ -128,11 +132,43 @@ export function getCitiesWithinKilometers(
     );
 
     if (distance <= radius) {
-      citiesWithinRadius.push(city);
+      citiesWithinRadius.push({ city, distance });
     }
   });
 
   return citiesWithinRadius;
+}
+
+export async function getClosestCitiesInCountryFromLocation(
+  originLat,
+  originLong,
+  country,
+  nbCities
+) {
+  let initialRadius = 10;
+  let citiesInSelectedCountry = await getCitiesFromCountry(country);
+  let nbIterations = 0;
+  let foundCities = [];
+
+  do {
+    foundCities = getCitiesWithinKilometers(
+      citiesInSelectedCountry,
+      originLat,
+      originLong,
+      initialRadius
+    );
+
+    if (foundCities.length < nbCities) initialRadius *= 2; //increase radius size if not enough cities found
+
+    //if (foundCities.length > nbCities) initialRadius /= 2; //reduce radius size if too much cities found
+    nbIterations++;
+  } while (foundCities.length < nbCities && nbIterations <= 5);
+
+  foundCities.sort((a, b) => a.distance - b.distance);
+
+  console.log(foundCities);
+
+  return foundCities.length <= 10 ? foundCities : foundCities.slice(0, 10);
 }
 
 export function getCountryColor(occurences) {

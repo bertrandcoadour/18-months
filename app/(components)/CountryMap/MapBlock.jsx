@@ -49,7 +49,7 @@ function MapBlock({ country }) {
 
       try {
         const res = await fetch(`/api/activities/byCountry/${country}`, {
-          cache: "force-cache",
+          cache: "no-cache",
         });
         if (!res.ok) {
           if (res.status === 404) {

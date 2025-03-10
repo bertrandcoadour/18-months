@@ -79,9 +79,9 @@ const Dropdown = ({ options, onSelect, value, name }) => {
           />
           {filteredOptions.length > 0 && (
             <ul className="w-full h-full max-h-64 pb-3 bg-activityList overflow-auto">
-              {filteredOptions.map((option) => (
+              {filteredOptions.map((option, index) => (
                 <li
-                  key={option}
+                  key={index}
                   onClick={() => handleOptionClick(option)}
                   className="px-3 py-2 hover:bg-activityList-hover cursor-pointer"
                 >

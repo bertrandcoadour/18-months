@@ -22,15 +22,15 @@ async function ActivityPage({ params }) {
             />
           </span>
           <div className="flex flex-col  md:flex-row  gap-x-14">
-            <span className="text-xl md:text-2xl lg:text-3xl font-normal p-1">
+            <div className="text-xl md:text-2xl lg:text-3xl font-normal p-1 text-center">
               {activity.title}
-            </span>
+            </div>
             <div className="flex gap-2 self-center ">
               <div className="max-md:hidden p-1">
                 <FontAwesomeIcon icon={faLocationDot} size="xl" />
               </div>
 
-              <span className="text-sm md:text-base lg:text-xl font-normal p-1">
+              <span className="text-sm md:text-base lg:text-xl font-normal p-1 text-center">
                 {activity.city + ", " + activity.country}
               </span>
             </div>

@@ -9,13 +9,13 @@ import {
 import ClickedSegment from "./ClickedSegment";
 import HoveredSegment from "./HoveredSegment";
 import StartAndFinishMarkers from "./StartAndFinishMarkers";
-import LocationAndRadiusMarkers from "./LocationAndRadiusMarkers";
+import CityMarkers from "./CityMarkers";
 
 export default function Map({
   fullTrackCoords,
   selectedKmCoords,
   hoveredKmCoords,
-  locationCoords,
+  cityCoords,
 }) {
   // a geojson feature for the full activity track
   var fullTrackGeojsonFeature = {
@@ -67,12 +67,10 @@ export default function Map({
       }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {locationCoords.length == 0 && (
+      {cityCoords.length == 0 && (
         <StartAndFinishMarkers data={fullTrackCoords} />
       )}
-      {locationCoords.length > 0 && (
-        <LocationAndRadiusMarkers data={locationCoords} />
-      )}
+      {cityCoords.length > 0 && <CityMarkers data={cityCoords} />}
       <AllTrack data={fullTrackGeojsonFeature} />
       <ClickedSegment
         data={selectedKmGeojsonFeature}

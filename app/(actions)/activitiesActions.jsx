@@ -153,13 +153,36 @@ export async function updateActivityCity(_id, newCity) {
   }
 }
 
-export const getActivitiesCountries = cache(async () => {
+// export const getActivitiesCountries = cache(async () => {
+//   try {
+//     const allCountries = await prisma.Activity.findMany({
+//       select: {
+//         country: true, // Only select the country related to each activity
+//       },
+//     });
+
+//     console.log(allCountries);
+
+//     const flattenCountries = allCountries
+//       .flatMap((country) => country.country)
+//       .filter((country) => country != null);
+
+//     return countOccurencesOfEntries(flattenCountries);
+//   } catch (error) {
+//     console.error("Error fetching countries:", error);
+//     throw error; // Re-throw the error for handling outside if needed
+//   }
+// });
+
+export async function getActivitiesCountries() {
   try {
     const allCountries = await prisma.Activity.findMany({
       select: {
         country: true, // Only select the country related to each activity
       },
     });
+
+    console.log(allCountries);
 
     const flattenCountries = allCountries
       .flatMap((country) => country.country)
@@ -170,7 +193,7 @@ export const getActivitiesCountries = cache(async () => {
     console.error("Error fetching countries:", error);
     throw error; // Re-throw the error for handling outside if needed
   }
-});
+}
 
 export const getActivitiesCities = cache(async () => {
   try {

@@ -9,6 +9,7 @@ import { info_to_display } from "../Utilities/InfoToDisplay/InfoToDisplay";
 import InfoLine from "./InfoLine";
 import DeleteBlock from "./DeleteBlock";
 import Loading from "./Loading";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 function ActivityList({ params }) {
   const [activities, setActivities] = useState([]);
@@ -96,7 +97,13 @@ function ActivityList({ params }) {
                 )}
               </div>
             </div>
-            <div className="p-2 visible lg:invisible lg:group-hover/item:visible self-center">
+            <div className="flex flex-col lg:flex-row gap-3 p-2 visible lg:invisible lg:group-hover/item:visible self-center lg:border-l">
+              <Link
+                className="hover:cursor-pointer hover:text-slate-900"
+                href={`/activities/${activity.id}/edit`}
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </Link>
               <DeleteBlock id={activity.id} />
             </div>
           </div>

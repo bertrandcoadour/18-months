@@ -25,9 +25,10 @@ export async function GET(req) {
     }
     let query_order = {};
     if (sort_by && sort_order) query_order[sort_by] = sort_order;
+    else query_order["timestamp"] = "desc";
     const activities = await prisma.Activity.findMany({
       where: query,
-      take: 5,
+      //take: 5,
       orderBy: query_order,
       omit: {
         records: true,

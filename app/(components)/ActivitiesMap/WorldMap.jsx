@@ -8,7 +8,7 @@ import { getCountryShape } from "@/app/(actions)/countriesActions";
 import CustomLegend from "./CustomLegend";
 
 export default function WorldMap({ countries }) {
-  const [center, setCenter] = useState([0, 0]);
+  const [center, setCenter] = useState([0, 40]);
   const [zoom, setZoom] = useState(2); // Default zoom level
   const [shapes, setShapes] = useState([]);
 
@@ -81,7 +81,8 @@ export default function WorldMap({ countries }) {
       minZoom={2}
       scrollWheelZoom={true}
       style={{
-        height: "800px",
+        height: "650px",
+        width: "100%",
         backgroundColor: "grey",
       }}
     >

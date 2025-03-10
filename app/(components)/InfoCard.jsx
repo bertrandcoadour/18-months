@@ -31,11 +31,11 @@ export default function InfoCard({ icon, title, subTitle }) {
       <FontAwesomeIcon icon={icon} size="2xl" className="icon" />
       <div className="flex flex-col min-w-0">
         <div
-          className={`font-medium self-center break-words overflow-hidden ${titleFontSize} min-h-8`}
+          className={`font-medium self-center text-center break-words overflow-hidden ${titleFontSize} min-h-8`}
         >
           {title}
         </div>
-        <div className="font-medium text-xs self-center break-words overflow-hidden">
+        <div className="font-medium text-xs self-center text-center break-words overflow-hidden">
           {subTitle}
         </div>
       </div>

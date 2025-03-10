@@ -14,8 +14,12 @@ import {
 import {
   getAllCountries,
   getCitiesFromCountry,
+  getCityLatAndLong,
 } from "@/app/(actions)/countriesActions";
-import { getCitiesWithinKilometers } from "@/app/Utilities/map/mapUtilities";
+import {
+  getCitiesWithinKilometers,
+  getClosestCitiesInCountryFromLocation,
+} from "@/app/Utilities/map/mapUtilities";
 import {
   updateActivityCity,
   updateActivityCountry,
@@ -64,12 +68,10 @@ function ActivityEditionBlock({ activity }) {
   //get the longitude and latitude of the default city, to be later used as the reference for the cities to display to the user
   useEffect(() => {
     const getLocationOrigin = async () => {
-      let cities = await getCitiesFromCountry(activity.country);
-      let cityInfo = cities.filter((c) => c.name == activity.city);
-
-      if (cityInfo) {
-        setLocationLat(cityInfo.at(0).latitude);
-        setLocationLong(cityInfo.at(0).longitude);
+      let latLong = await getCityLatAndLong(activity.city, activity.country);
+      if (latLong && latLong.length == 2) {
+        setLocationLat(latLong.at(0));
+        setLocationLong(latLong.at(1));
       }
     };
 
@@ -90,32 +92,26 @@ function ActivityEditionBlock({ activity }) {
     fetchCountries();
   }, []); // Empty dependency array ensures this runs only once
 
-  useEffect(() => {
-    validateForm();
-  }); //check the form validity as soon as something is updated of the page
-
   //get the cities to display to the user
   useEffect(() => {
     const fetchCities = async () => {
       if (locationLat != 0 && locationLong != 0) {
-        let citiesInSelectedCountry = await getCitiesFromCountry(
-          country ? country : activity.country
-        );
-
-        let citiesAround = getCitiesWithinKilometers(
-          citiesInSelectedCountry,
+        let foundCities = await getClosestCitiesInCountryFromLocation(
           locationLat,
           locationLong,
-          30
+          country ? country : activity.country,
+          10
         );
-
-        citiesAround = citiesAround.map((c) => c.name);
-        setCities(citiesAround);
+        setCities(foundCities);
       }
     };
 
     fetchCities();
   }, [country, activity.country, locationLat, locationLong]); //get the cities as soon as the coutry selection changed
+
+  useEffect(() => {
+    validateForm();
+  }); //check the form validity as soon as something is updated of the page
 
   const handleTypeChanged = (event) => {
     setType(event);
@@ -164,7 +160,7 @@ function ActivityEditionBlock({ activity }) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+    <div className="md:h-full grid grid-cols-1 md:grid-cols-2 gap-2">
       <form
         className="flex flex-col gap-6  p-6 overflow-auto"
         action={handleSubmit}
@@ -194,12 +190,12 @@ function ActivityEditionBlock({ activity }) {
           />
         </div>
         <hr className="h-px border-1 bg-activityList mb-2" />
-        <label className="text-sm font-normal">
+        {/* <label className="text-sm font-normal">
           You can change the activity location by selecting a new country and/or
           a new city. Only cities within 30 kilometers from the orignial
           location can be selected (see the marker and the circle radius on the
           map).{" "}
-        </label>
+        </label> */}
         <div className="flex flex-col w-full max-w-80">
           <span className="">Country : </span>
           <Dropdown
@@ -211,7 +207,7 @@ function ActivityEditionBlock({ activity }) {
         <div className="flex flex-col w-full max-w-80">
           <span className="">City : </span>
           <Dropdown
-            options={cities}
+            options={cities.map((c) => c.city.name)}
             onSelect={handleCityChange}
             value={city == null ? activity.city : city}
           />
@@ -238,13 +234,13 @@ function ActivityEditionBlock({ activity }) {
         </div>
       </form>
 
-      <div className="flex-1 p-5">
+      <div className="p-5">
         {coordinates && (
           <ClientMap
             fullTrackCoords={coordinates}
             selectedKmCoords={[]}
             hoveredKmCoords={[]}
-            locationCoords={[locationLat, locationLong]}
+            cityCoords={cities}
           />
         )}
       </div>

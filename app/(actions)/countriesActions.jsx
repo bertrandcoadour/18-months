@@ -84,6 +84,24 @@ export async function getCitiesFromCountry(countryName) {
   }
 }
 
+export async function getCityLatAndLong(cityName, countryName) {
+  try {
+    let cities = await getCitiesFromCountry(countryName);
+    if (cities.length < 1) {
+      return { error: `Can't fetch cities in "${countryName}".` };
+    }
+
+    let city = cities.filter((c) => c.name == cityName);
+
+    if (!city) return { error: `Can't find "${cityName}" city in database.` };
+
+    return [city.at(0).latitude, city.at(0).longitude];
+  } catch (error) {
+    console.error("Error retrieving city latitude and longitude:", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+}
+
 export async function getAllCountries() {
   try {
     return await prisma.Country.findMany({

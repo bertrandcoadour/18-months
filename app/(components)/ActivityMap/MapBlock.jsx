@@ -86,7 +86,7 @@ function MapBlock({ activity }) {
               fullTrackCoords={coordinates}
               selectedKmCoords={selectedKmCoords}
               hoveredKmCoords={hoveredKmCoords}
-              locationCoords={[]}
+              cityCoords={[]}
             />
           )}
         </div>

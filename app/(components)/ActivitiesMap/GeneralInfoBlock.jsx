@@ -67,17 +67,6 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
     return current.entryOccurences > max.entryOccurences ? current : max;
   }, types[0]); // Start with the first country as the initial max
 
-  const getCountryOccurences = (countryName) => {
-    const foundCountry = countries.find(
-      (country) => country.entryName === countryName
-    );
-    if (foundCountry) {
-      return foundCountry.entryOccurences;
-    } else {
-      return undefined;
-    }
-  };
-
   const getTypeOccurences = (activityType) => {
     const foundType = types.find((type) => type.entryName === activityType);
     if (foundType) {
@@ -193,11 +182,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="flex items-center justify-center font-medium p-4">
-        World Map
-      </h2>
-
-      <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
+      <hr className="h-px border-1 bg-activityList mb-2 mr-2 mt-4" />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
           icon={faCloudArrowUp}
@@ -235,6 +220,7 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <InfoCard
+          className=""
           icon={faPersonRunning}
           title={getTypeOccurences("running")}
           subTitle={"activities"}
@@ -286,34 +272,6 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
         />
       </div>
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
-      <div className="flex items-center justify-center gap-2 mx-auto h-full p-4">
-        {!selectedCountry && (
-          <div className="flex flex-col gap-4 ">
-            <div className="flex flex-row gap-4">
-              <FontAwesomeIcon icon={faBan} size="2xl" className="icon " />
-              <h3>No country selected !</h3>
-            </div>
-            <h6 className="font-light text-sm self-center">
-              Select a country on the map for more info
-            </h6>
-          </div>
-        )}
-        {selectedCountry && (
-          <Link
-            className="hover:cursor-pointer hover:text-slate-900"
-            href={`/map/${selectedCountry}`}
-          >
-            <div className="relative w-full border rounded-md shadow-lg">
-              <button className="bg-gray-800 hover:bg-gray-500 text-white py-2 px-4 rounded-md flex items-center justify-center hover:text-black transition cursor-pointer">
-                <span className="mr-2">{`Explore ${getCountryOccurences(
-                  selectedCountry
-                )} activities in ${selectedCountry} `}</span>
-                <FontAwesomeIcon icon={faArrowRight} />
-              </button>
-            </div>
-          </Link>
-        )}
-      </div>
     </div>
   );
 }
