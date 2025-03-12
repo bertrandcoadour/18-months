@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import qs from "query-string";
 
 function TypeBox({ icon, label, subLabel, description, selected }) {
   const router = useRouter();
   const params = useSearchParams();
+  const path = usePathname();
 
   const handleClick = useCallback(() => {
     let currentQuery = {};
@@ -40,7 +41,7 @@ function TypeBox({ icon, label, subLabel, description, selected }) {
 
     const url = qs.stringifyUrl(
       {
-        url: "/activities",
+        url: path,
         query: updatedQuery,
       },
       { skipNull: true }

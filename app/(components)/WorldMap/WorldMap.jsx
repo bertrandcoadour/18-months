@@ -45,7 +45,7 @@ export default function WorldMap({ countries }) {
       }
     };
 
-    fetchShapes(); // Call the inner async function
+    fetchShapes();
   }, [countries]); // fetch every time countries prop changes
 
   const handleCountrySelected = useCallback((country) => {

@@ -182,8 +182,6 @@ export async function getActivitiesCountries() {
       },
     });
 
-    console.log(allCountries);
-
     const flattenCountries = allCountries
       .flatMap((country) => country.country)
       .filter((country) => country != null);

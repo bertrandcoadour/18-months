@@ -1,5 +1,5 @@
 import { getActivityById } from "@/app/(actions)/activitiesActions";
-import InfoLine from "@/app/(components)/InfoLine";
+import InfoLine from "@/app/(components)/SimpleCard";
 import { getActivityIcon } from "@/app/Utilities/Icons/Icons";
 import { info_to_display } from "@/app/Utilities/InfoToDisplay/InfoToDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,19 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// export default function InfoCard({ icon, title, subTitle }) {
-//   return (
-//     <div className="flex flex-row  justify-center items-center gap-4 p-4">
-//       <FontAwesomeIcon icon={icon} size="2xl" className="icon " />
-//       <div className="flex flex-col">
-//         <div className="font-medium text-2xl self-center max-w-56">{title}</div>
-//         <div className="font-medium text-xs self-center">{subTitle}</div>
-//       </div>
-//     </div>
-//   );
-// }
-
-export default function InfoCard({ icon, title, subTitle }) {
+export default function IconCard({ icon, title, subTitle }) {
   const getFontSize = (length) => {
     if (length > 20) {
       return "text-sm"; // Smaller font for long titles

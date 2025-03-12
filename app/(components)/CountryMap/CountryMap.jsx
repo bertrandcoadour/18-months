@@ -11,11 +11,14 @@ import {
 import { convertFitToStandardCoord } from "@/app/Utilities/map/mapUtilities";
 import ActivityMarkers from "./ActivityMarkers";
 import { getActivitiyCoords } from "@/app/(actions)/activitiesActions";
-import AllTrack from "../ActivityMap/AllTrack";
 import { getActivityDescription } from "@/app/Utilities/Icons/Icons";
 import Tracks from "./Tracks";
 
-export default function CountryMap({ countryShape, activities }) {
+export default function CountryMap({
+  countryShape,
+  activities,
+  onSelectedMarker,
+}) {
   const [center, setCenter] = useState([0, 0]);
   const [zoom, setZoom] = useState(2); // Default zoom level
   const [activityTracks, setActivityTracks] = useState([]);
@@ -32,8 +35,14 @@ export default function CountryMap({ countryShape, activities }) {
     subSport: activity.subSport,
   }));
 
+  useEffect(() => {
+    setActivityTracks([]);
+  }, [activities]);
+
   const handleMarkerClicked = (marker) => {
     const markerId = marker.options.id;
+
+    onSelectedMarker(markerId); //send the selected marker to the parent component
 
     const fetchActivityCoords = async () => {
       const getCoords = async (id) => {
@@ -41,7 +50,6 @@ export default function CountryMap({ countryShape, activities }) {
       };
 
       const coords = await getCoords(marker.options.id);
-      // a geojson feature for the activity track
       var fullTrackGeojsonFeature = {
         type: "Feature",
         properties: {
@@ -90,7 +98,8 @@ export default function CountryMap({ countryShape, activities }) {
       minZoom={2}
       scrollWheelZoom={true}
       style={{
-        height: "850px",
+        height: "650px",
+        width: "100%",
         backgroundColor: "grey",
       }}
     >

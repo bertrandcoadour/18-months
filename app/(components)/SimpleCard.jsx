@@ -7,7 +7,7 @@ import {
   convertTimestampToDate,
 } from "../Utilities/Global/convertData";
 
-export default function InfoLine({ activity, title, subTitle, unit }) {
+export default function SimpleCard({ activity, title, subTitle, unit }) {
   function getValue() {
     switch (title) {
       case "timestamp":
@@ -28,7 +28,9 @@ export default function InfoLine({ activity, title, subTitle, unit }) {
 
   return (
     <div className=" w-full max-w-60 min-w-44 self-start p-1">
-      <div className="text-start">{`${getValue()} ${unit ? unit : ""}`}</div>
+      <div className="text-start text-sm">{`${getValue()} ${
+        unit ? unit : ""
+      }`}</div>
       <div className="font-medium text-xs text-start">
         {subTitle ? subTitle : ""}
       </div>

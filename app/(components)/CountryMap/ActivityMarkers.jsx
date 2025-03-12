@@ -2,26 +2,16 @@ import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L, { tooltip } from "leaflet";
 import { getActivityDescription } from "@/app/Utilities/Icons/Icons";
-import "../ActivitiesMap/CustomInfo.css";
+import "../WorldMap/CustomInfo.css";
 
 const ActivityMarkers = ({ data, markerClicked }) => {
   const map = useMap(); //get the activities whose marker are already displayed on the map
 
-  const displayedMarkers = [];
-
   map.eachLayer((layer) => {
-    if (layer instanceof L.Marker) displayedMarkers.push(layer);
-  }); //by comparing the markers already displayed with the data in the props, get the markers to be displayed
-
-  //console.log("displayedMarkers", displayedMarkers);
-
-  const markersToDisplay = [];
-  data.forEach((d) => {
-    if (!displayedMarkers.find((marker) => marker?.options?.id == d.id))
-      markersToDisplay.push(d);
+    if (layer instanceof L.Marker) {
+      map.removeLayer(layer);
+    }
   });
-
-  //console.log("markersToDisplay", markersToDisplay);
 
   const getIconUrl = (type) => {
     switch (type) {
@@ -72,11 +62,7 @@ const ActivityMarkers = ({ data, markerClicked }) => {
   };
 
   useEffect(() => {
-    // const walkingActivities = [];
-    // const runningActivities = [];
-    // const cyclingActivities = [];
-
-    markersToDisplay.forEach((d) => {
+    data.forEach((d) => {
       const marker = L.marker([d.latitude, d.longitude], {
         icon: getIcon(d),
         id: d.id,
@@ -89,15 +75,6 @@ const ActivityMarkers = ({ data, markerClicked }) => {
         distance: d.distance,
       }).addTo(map); //.bindPopup(d.title + " " + d.date + " " + d.distance)
 
-      // const type = getActivityDescription(
-      //   marker.options.sport,
-      //   marker.options.subSport
-      // );
-
-      // type === "Walking" && walkingActivities.push(marker);
-      // type === "Running" && runningActivities.push(marker);
-      // type === "Cycling" && cyclingActivities.push(marker);
-
       marker.on("click", (e) => {
         const clickedMarker = e.target;
         markerClicked(clickedMarker);
@@ -108,42 +85,18 @@ const ActivityMarkers = ({ data, markerClicked }) => {
       });
 
       marker.on("mouseover", (e) => {
-        info.update({
-          title: marker.options.title,
-          date: marker.options.date,
-          distance: marker.options.distance,
-        });
+        // info.update({
+        //   title: marker.options.title,
+        //   date: marker.options.date,
+        //   distance: marker.options.distance,
+        // });
       });
 
       marker.on("mouseout", (e) => {
-        info.update();
+        //info.update();
       });
     });
-
-    // if (data.length > 0) {
-    //   let walkGroup = L.layerGroup(walkingActivities, {
-    //     id: "Activities",
-    //   });
-    //   let runGroup = L.layerGroup(runningActivities, {
-    //     id: "Activities",
-    //   });
-    //   let cycleGroup = L.layerGroup(cyclingActivities, {
-    //     id: "Activities",
-    //   });
-
-    // walkGroup.addTo(map);
-    // runGroup.addTo(map);
-    // cycleGroup.addTo(map);
-
-    // let overlayMaps = {
-    //   "Walking activities": walkGroup,
-    //   "Running activities": runGroup,
-    //   "Cycling activities": cycleGroup,
-    // };
-
-    //L.control.layers(null, overlayMaps).addTo(map);
-    markersToDisplay.length > 0 && info.addTo(map);
-  }, [map, markersToDisplay]);
+  }, [map, data]);
 
   return null;
 };

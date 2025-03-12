@@ -4,6 +4,8 @@ import { deleteActivities } from "../(actions)/activitiesActions";
 
 const DeleteBlock = ({ id }) => {
   const deleteActivity = async () => {
+    alert("Delete function is disabled !");
+    return;
     await deleteActivities(id);
   };
 

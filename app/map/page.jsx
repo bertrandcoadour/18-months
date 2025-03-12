@@ -3,8 +3,8 @@ import {
   getActivitiesCountries,
   getActivitiesTypes,
 } from "../(actions)/activitiesActions";
-import GeneralInfoBlock from "../(components)/ActivitiesMap/GeneralInfoBlock";
-import MapBlock from "../(components)/ActivitiesMap/MapBlock";
+import GeneralInfoBlock from "../(components)/WorldMap/GeneralInfoBlock";
+import MapBlock from "../(components)/WorldMap/MapBlock";
 import Link from "next/link";
 import { faBan, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

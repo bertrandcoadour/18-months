@@ -40,9 +40,9 @@ import {
   walkingActivitiesTotalAscent,
   walkingActivitiesTotalDistance,
 } from "@/app/(actions)/activitiesActions";
-import InfoCard from "../InfoCard";
+import IconCard from "../IconCard";
 
-function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
+function GeneralInfoBlock({ countries, cities, types }) {
   const [walkingDistance, setWalkingDistance] = useState(0);
   const [runningDistance, setRunningDistance] = useState(0);
   const [cyclingDistance, setCyclingDistance] = useState(0);
@@ -184,32 +184,32 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
     <div className="flex flex-col h-full">
       <hr className="h-px border-1 bg-activityList mb-2 mr-2 mt-4" />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
-        <InfoCard
+        <IconCard
           icon={faCloudArrowUp}
           title={totalOccurrences}
           subTitle={"Activities"}
         />
-        <InfoCard
+        <IconCard
           icon={faPassport}
           title={countries.length}
           subTitle={"Countries"}
         />
-        <InfoCard
+        <IconCard
           icon={faFlagUsa}
           title={mostFrequentCountry.entryName}
           subTitle={"most visitied country"}
         />
-        <InfoCard
+        <IconCard
           icon={faTreeCity}
           title={mostFrequentCity.entryName}
           subTitle={"most visitied city"}
         />
-        <InfoCard
+        <IconCard
           icon={faRankingStar}
           title={mostFrequentType.entryName}
           subTitle={"favourite activity"}
         />
-        <InfoCard
+        <IconCard
           icon={faCalendarCheck}
           title={totalTime}
           subTitle={"hours of training"}
@@ -219,18 +219,18 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
-        <InfoCard
+        <IconCard
           className=""
           icon={faPersonRunning}
           title={getTypeOccurences("running")}
           subTitle={"activities"}
         />
-        <InfoCard
+        <IconCard
           icon={faRoad}
           title={runningDistance}
           subTitle={"total distance (km)"}
         />
-        <InfoCard
+        <IconCard
           icon={faGaugeHigh}
           title={avgRunningPace}
           subTitle={"avg pace (min/km)"}
@@ -238,34 +238,34 @@ function GeneralInfoBlock({ countries, cities, types, selectedCountry }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
-        <InfoCard
+        <IconCard
           icon={faPersonHiking}
           title={getTypeOccurences("walking")}
           subTitle={"activities"}
         />
-        <InfoCard
+        <IconCard
           icon={faRoad}
           title={walkingDistance}
           subTitle={"total distance (km)"}
         />
-        <InfoCard
+        <IconCard
           icon={faMountain}
           title={walkingTotalAscent}
           subTitle={"total ascent (m)"}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
-        <InfoCard
+        <IconCard
           icon={faPersonBiking}
           title={getTypeOccurences("cycling")}
           subTitle={"activities"}
         />
-        <InfoCard
+        <IconCard
           icon={faRoad}
           title={cyclingDistance}
           subTitle={"total distance (km)"}
         />
-        <InfoCard
+        <IconCard
           icon={faTruckFast}
           title={cyclingMaxSpeed}
           subTitle={"max speed (km/h)"}

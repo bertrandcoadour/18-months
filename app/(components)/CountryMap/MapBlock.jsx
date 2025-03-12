@@ -4,11 +4,11 @@ import { useMemo, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "../Loading";
+import CountryInfoBlock from "./CountryInfoBlock";
+import CountryFilterBlock from "./CountryFilterBlock";
 
-function MapBlock({ country }) {
-  const [shape, setShape] = useState(null);
-  const [activities, setActivities] = useState([]);
-  const [error, setError] = useState(null);
+function MapBlock({ shape, activities }) {
+  const [selectedActivities, setSelectedActivities] = useState([]);
 
   const ClientMap = useMemo(
     () =>
@@ -20,54 +20,58 @@ function MapBlock({ country }) {
   );
 
   useEffect(() => {
-    const fetchCountryShape = async () => {
-      setError(null);
+    // let foundActivities = selectedActivities.filter((activity) => {
+    //   return activities.some((act) => act.id === activity.id);
+    // });
 
-      try {
-        const res = await fetch(`/api/countryShape/${country}`, {
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          if (res.status === 404) {
-            throw new Error("Country shape not found");
-          }
-          throw new Error("Failed to fetch country shape");
+    // console.log(foundActivities);
+
+    setSelectedActivities([]);
+  }, [activities]);
+
+  const onSelectedActivity = (selectedId) => {
+    let selectedActivity = activities.filter(
+      (activity) => activity.id == selectedId
+    );
+
+    if (selectedActivity && selectedActivity.length > 0) {
+      setSelectedActivities((prevActivities) => {
+        const existingIndex = prevActivities.findIndex(
+          (prevAct) => prevAct.id === selectedId
+        );
+
+        if (existingIndex > -1) {
+          // activity already exists, remove it
+          const newActivities = [...prevActivities]; // Create a copy
+          newActivities.splice(existingIndex, 1);
+
+          return newActivities;
+        } else {
+          // Activity doesn't exist, add it
+          const newActivities = [...prevActivities, selectedActivity[0]];
+          return newActivities;
         }
+      });
+    }
+  };
 
-        setShape(await res.json());
-      } catch (error) {
-        setError(err);
-      }
-    };
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2  gap-2">
+      <div>
+        <CountryFilterBlock activities={activities} />
+        <ClientMap
+          countryShape={shape}
+          activities={activities}
+          onSelectedMarker={onSelectedActivity}
+        />
+      </div>
 
-    fetchCountryShape();
-  }, [country]);
-
-  useEffect(() => {
-    const fetchActivities = async () => {
-      setError(null);
-
-      try {
-        const res = await fetch(`/api/activities/byCountry/${country}`, {
-          cache: "no-cache",
-        });
-        if (!res.ok) {
-          if (res.status === 404) {
-            throw new Error(`activities in ${country}  not found`);
-          }
-          throw new Error("Failed to fetch activities");
-        }
-
-        setActivities(await res.json());
-      } catch (error) {
-        setError(err);
-      }
-    };
-
-    fetchActivities();
-  }, [country]);
-
-  return <ClientMap countryShape={shape} activities={activities} />;
+      <CountryInfoBlock
+        activities={activities}
+        selectedActivities={selectedActivities}
+      />
+    </div>
+  );
 }
 
 export default MapBlock;
