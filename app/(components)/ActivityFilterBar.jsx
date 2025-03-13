@@ -8,13 +8,27 @@ import { info_to_display } from "../Utilities/InfoToDisplay/InfoToDisplay";
 import UpAndDownBox from "./UpAndDownBox";
 import SearchBar from "./SearchBar";
 
-function ActivityFilterBar() {
+function ActivityFilterBar({ sportTypes }) {
   const params = useSearchParams();
   const sport = params?.get("sport");
   const subSport = params?.get("subSport");
   const sort_by = params?.get("sort_by");
   const sort_order = params?.get("sort_order");
   const search = params?.get("search");
+
+  const getTypeOccurences = (activityType) => {
+    if (activityType == "All")
+      return sportTypes.reduce((sum, item) => sum + item.entryOccurences, 0);
+
+    const foundType = sportTypes.find(
+      (type) => type.entryName === activityType
+    );
+    if (foundType) {
+      return foundType.entryOccurences;
+    } else {
+      return undefined;
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -37,6 +51,7 @@ function ActivityFilterBar() {
                     label={item.label}
                     subLabel={item.subLabel}
                     description={item.description}
+                    occurrences={getTypeOccurences(item.label)}
                     selected={
                       sport === item.label && subSport === item.subLabel
                     }

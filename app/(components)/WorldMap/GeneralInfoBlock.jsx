@@ -183,7 +183,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
   return (
     <div className="flex flex-col h-full">
       <hr className="h-px border-1 bg-activityList mb-2 mr-2 mt-4" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
+      <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <IconCard
           icon={faCloudArrowUp}
           title={totalOccurrences}
@@ -218,7 +218,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
 
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
+      <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <IconCard
           className=""
           icon={faPersonRunning}
@@ -237,7 +237,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
+      <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <IconCard
           icon={faPersonHiking}
           title={getTypeOccurences("walking")}
@@ -254,22 +254,28 @@ function GeneralInfoBlock({ countries, cities, types }) {
           subTitle={"total ascent (m)"}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-1 pb-5">
-        <IconCard
-          icon={faPersonBiking}
-          title={getTypeOccurences("cycling")}
-          subTitle={"activities"}
-        />
-        <IconCard
-          icon={faRoad}
-          title={cyclingDistance}
-          subTitle={"total distance (km)"}
-        />
-        <IconCard
-          icon={faTruckFast}
-          title={cyclingMaxSpeed}
-          subTitle={"max speed (km/h)"}
-        />
+      <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
+        <div>
+          <IconCard
+            icon={faPersonBiking}
+            title={getTypeOccurences("cycling")}
+            subTitle={"activities"}
+          />
+        </div>
+        <div>
+          <IconCard
+            icon={faRoad}
+            title={cyclingDistance}
+            subTitle={"total distance (km)"}
+          />
+        </div>
+        <div>
+          <IconCard
+            icon={faTruckFast}
+            title={cyclingMaxSpeed}
+            subTitle={"max speed (km/h)"}
+          />
+        </div>
       </div>
       <hr className="h-px border-1 bg-activityList mb-2 mr-2" />
     </div>

@@ -1,9 +1,18 @@
+"use client";
+
 import React, { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import qs from "query-string";
 
-function TypeBox({ icon, label, subLabel, description, selected }) {
+function TypeBox({
+  icon,
+  label,
+  subLabel,
+  description,
+  occurrences,
+  selected,
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const path = usePathname();
@@ -53,13 +62,16 @@ function TypeBox({ icon, label, subLabel, description, selected }) {
   return (
     <div
       onClick={handleClick}
-      className={`flex flex-col w-full max-w-20 items-center justify-center gap-2 p-3 border-b-2 hover:text-neutral-500 transition cursor-pointer ${
+      className={`flex flex-col w-full max-w-20 items-center justify-between gap-2 lg:gap-1 p-2 lg:p-1 border-b-2 hover:text-neutral-500 transition cursor-pointer ${
         selected ? "border-b-neutral-500" : "border-transparent"
       } ${selected ? "text-neutral-500" : "text-neutral-200"}`}
     >
       <FontAwesomeIcon icon={icon} className="icon " />
       <div className="font-medium text-xs text-center max-md:hidden ">
         {description}
+      </div>
+      <div className="font-medium text-xs text-center">
+        {occurrences && `(${occurrences})`}
       </div>
     </div>
   );

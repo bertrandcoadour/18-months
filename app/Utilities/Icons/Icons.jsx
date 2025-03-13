@@ -3,10 +3,23 @@ import {
   faPersonRunning,
   faPersonBiking,
   faMountain,
+  faCalendarXmark,
+  faCloudArrowUp,
+  faPassport,
+  faRankingStar,
+  faFlagUsa,
+  faCalendarCheck,
+  faTreeCity,
+  faRoad,
+  faGaugeHigh,
   faPersonSwimming,
   faDumbbell,
   faNotdef,
   faPerson,
+  faBan,
+  faArrowRight,
+  faTruckFast,
+  faGauge,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const activity_types_icons = [
@@ -55,6 +68,111 @@ export const activity_types_icons = [
   {
     label: "Not found",
     icon: faNotdef,
+  },
+];
+
+export const world_general_icons = [
+  {
+    label: "activities",
+    icon: faCloudArrowUp,
+    description: "Activities",
+  },
+  {
+    label: "countries",
+    icon: faPassport,
+    description: "Walking",
+  },
+  {
+    label: "topCountry",
+    icon: faFlagUsa,
+    description: "Most visitied country",
+  },
+];
+
+export const country_general_icons = [
+  {
+    label: "startDate",
+    icon: faCalendarCheck,
+    description: "first activity",
+  },
+  {
+    label: "endDate",
+    icon: faCalendarXmark,
+    description: "last activity",
+  },
+  {
+    label: "favoriteCity",
+    icon: faTreeCity,
+    description: "favorite city",
+  },
+  {
+    label: "totalDistance",
+    icon: faRoad,
+    description: "total distance (km)",
+  },
+];
+
+export const country_running_icons = [
+  {
+    label: "totalDistance",
+    icon: faRoad,
+    description: "total distance (km)",
+  },
+  {
+    label: "avgPace",
+    icon: faGauge,
+    description: "avg pace (min/km)",
+  },
+  {
+    label: "totalAscent",
+    icon: faMountain,
+    description: "total ascent (m)",
+  },
+  {
+    label: "bestAvgPace",
+    icon: faGaugeHigh,
+    description: "best avg pace (min/km)",
+  },
+];
+
+export const country_walking_icons = [
+  {
+    label: "totalDistance",
+    icon: faRoad,
+    description: "total distance (km)",
+  },
+  {
+    label: "avgPace",
+    icon: faGauge,
+    description: "avg pace (min/km)",
+  },
+  {
+    label: "totalAscent",
+    icon: faMountain,
+    description: "total ascent (m)",
+  },
+];
+
+export const country_cycling_icons = [
+  {
+    label: "totalDistance",
+    icon: faRoad,
+    description: "total distance (km)",
+  },
+  {
+    label: "avgPace",
+    icon: faGauge,
+    description: "avg speed (km/h)",
+  },
+  {
+    label: "totalAscent",
+    icon: faMountain,
+    description: "total ascent (m)",
+  },
+  {
+    label: "bestSpeed",
+    icon: faGaugeHigh,
+    description: "best speed (km/h)",
   },
 ];
 

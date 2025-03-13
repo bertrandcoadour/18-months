@@ -1,4 +1,7 @@
-import { convertMetersToKms } from "@/app/Utilities/Global/convertData";
+import {
+  convertMetersPerSecondsToKmPerSeconds,
+  convertMetersToKms,
+} from "@/app/Utilities/Global/convertData";
 import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
 
@@ -17,7 +20,9 @@ export async function GET() {
       return Math.max(max, current.enhancedMaxSpeed);
     }, -Infinity);
 
-    return NextResponse.json(Math.round(maxSpeed));
+    return NextResponse.json(
+      Math.round(convertMetersPerSecondsToKmPerSeconds(maxSpeed))
+    );
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }

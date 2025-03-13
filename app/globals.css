@@ -40,7 +40,7 @@
 
 @layer components {
   .icon {
-    @apply text-default-text text-xl;
+    @apply text-default-text text-base lg:text-xl xl:text-2xl;
   }
   .btn {
     @apply hover:no-underline bg-blue-accent hover:bg-blue-accent-hover text-center text-nav font-bold cursor-pointer uppercase rounded-md transition-colors block;

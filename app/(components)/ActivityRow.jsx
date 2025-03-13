@@ -27,9 +27,9 @@ function ActivityRow({ activity, size }) {
             className="hover:cursor-pointer hover:text-slate-900 self-center"
             href={`/activities/${activity.id}`}
           >
-            <p className="text-start text-sm overflow-hidden">
+            <div className="text-start text-sm overflow-hidden">
               {activity.title}
-            </p>
+            </div>
 
             <div className="font-medium text-xs text-start">
               {activity.city + ", " + activity.country}

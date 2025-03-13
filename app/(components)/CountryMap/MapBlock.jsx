@@ -4,8 +4,7 @@ import { useMemo, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Loading from "../Loading";
-import CountryInfoBlock from "./CountryInfoBlock";
-import CountryFilterBlock from "./CountryFilterBlock";
+import SelectedActivitiesBlock from "./SelectedActivitiesBlock";
 
 function MapBlock({ shape, activities }) {
   const [selectedActivities, setSelectedActivities] = useState([]);
@@ -58,7 +57,6 @@ function MapBlock({ shape, activities }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2  gap-2">
       <div>
-        <CountryFilterBlock activities={activities} />
         <ClientMap
           countryShape={shape}
           activities={activities}
@@ -66,10 +64,7 @@ function MapBlock({ shape, activities }) {
         />
       </div>
 
-      <CountryInfoBlock
-        activities={activities}
-        selectedActivities={selectedActivities}
-      />
+      <SelectedActivitiesBlock selectedActivities={selectedActivities} />
     </div>
   );
 }

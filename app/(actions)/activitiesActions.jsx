@@ -231,6 +231,28 @@ export const getActivitiesTypes = cache(async () => {
   }
 });
 
+export const getActivitiesTypesInCountry = cache(async (country) => {
+  try {
+    const allTypes = await prisma.Activity.findMany({
+      select: {
+        sport: true, // Only select the type related to each activity
+      },
+      where: {
+        country: country,
+      },
+    });
+
+    const flattenTypes = allTypes
+      .flatMap((type) => type.sport)
+      .filter((sport) => sport != null);
+
+    return countOccurencesOfEntries(flattenTypes);
+  } catch (error) {
+    console.error("Error fetching types in " + country + " :", error);
+    throw error; // Re-throw the error for handling outside if needed
+  }
+});
+
 export async function walkingActivitiesCount() {
   try {
     const walkingActivities = await prisma.Activity.findMany({
