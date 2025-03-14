@@ -153,7 +153,7 @@ function ActivityEditionBlock({ activity }) {
       await updateActivityCity(activity.id, city);
       await updateActivityCountry(activity.id, country);
 
-      router.push(`/activities/${activity.id}`);
+      router.back();
     };
 
     submit();
