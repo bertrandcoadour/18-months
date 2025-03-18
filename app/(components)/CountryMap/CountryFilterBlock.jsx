@@ -5,13 +5,13 @@ import React from "react";
 import TypeBox from "../TypeBox";
 import { useSearchParams } from "next/navigation";
 
-function CountryFilterBlock({ country, sportTypes, activities }) {
+function CountryFilterBlock({ sportTypes }) {
   const params = useSearchParams();
   const sport = params?.get("sport");
   const subSport = params?.get("subSport");
 
   const getTypeOccurences = (activityType) => {
-    if (activityType == "All")
+    if (activityType.includes("All"))
       return sportTypes.reduce((sum, item) => sum + item.entryOccurences, 0);
 
     const foundType = sportTypes.find(
@@ -29,7 +29,9 @@ function CountryFilterBlock({ country, sportTypes, activities }) {
       {activity_types_icons.map(
         (item, index) =>
           item.label != "Not found" &&
-          (sportTypes.find((sport) => sport.entryName == item.label) ||
+          (sportTypes.find(
+            (sport) => sport.entryName == item.label + " " + item.subLabel
+          ) ||
             item.label == "All") && (
             <TypeBox
               key={index}
@@ -37,7 +39,7 @@ function CountryFilterBlock({ country, sportTypes, activities }) {
               label={item.label}
               subLabel={item.subLabel}
               description={item.description}
-              occurrences={getTypeOccurences(item.label)}
+              occurrences={getTypeOccurences(item.label + " " + item.subLabel)}
               selected={sport === item.label && subSport === item.subLabel}
             />
           )

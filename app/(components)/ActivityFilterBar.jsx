@@ -17,7 +17,7 @@ function ActivityFilterBar({ sportTypes }) {
   const search = params?.get("search");
 
   const getTypeOccurences = (activityType) => {
-    if (activityType == "All")
+    if (activityType.includes("All"))
       return sportTypes.reduce((sum, item) => sum + item.entryOccurences, 0);
 
     const foundType = sportTypes.find(
@@ -51,7 +51,9 @@ function ActivityFilterBar({ sportTypes }) {
                     label={item.label}
                     subLabel={item.subLabel}
                     description={item.description}
-                    occurrences={getTypeOccurences(item.label)}
+                    occurrences={getTypeOccurences(
+                      item.label + " " + item.subLabel
+                    )}
                     selected={
                       sport === item.label && subSport === item.subLabel
                     }
@@ -64,9 +66,8 @@ function ActivityFilterBar({ sportTypes }) {
 
       {sport && subSport && (
         <div className="flex flex-row flex-grow max-lg:hidden">
-          <div className="w-full max-w-20 pl-2" />
-          <div className="w-full max-w-lg xl:shrink-0" />
-          <div className="grid grid-cols-6 flex-grow gap-x-12 pr-20">
+          <div className="w-full max-w-2xl lg:max-w-2xl xl:shrink-0" />
+          <div className="grid grid-cols-6 flex-grow gap-x-16 pr-24">
             {info_to_display.map(
               (info) =>
                 sport === info.sport &&
@@ -88,5 +89,7 @@ function ActivityFilterBar({ sportTypes }) {
     </div>
   );
 }
+
+// flex flex-grow w-full max-w-4xl lg:max-w-2xl xl:shrink-0 pb-1
 
 export default ActivityFilterBar;

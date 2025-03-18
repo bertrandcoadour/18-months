@@ -12,7 +12,7 @@ export default function IconCard({ icon, title, subTitle }) {
     }
   };
 
-  const titleFontSize = getFontSize(title.length);
+  const titleFontSize = getFontSize(title?.length);
 
   return (
     <div className="flex flex-col min-w-0 p-2 lg:p-3">

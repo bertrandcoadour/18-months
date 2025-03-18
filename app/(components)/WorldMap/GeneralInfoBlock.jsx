@@ -65,7 +65,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
 
   const mostFrequentType = types.reduce((max, current) => {
     return current.entryOccurences > max.entryOccurences ? current : max;
-  }, types[0]); // Start with the first country as the initial max
+  }, types[0]); // Start with the first type as the initial max
 
   const getTypeOccurences = (activityType) => {
     const foundType = types.find((type) => type.entryName === activityType);
@@ -222,7 +222,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
         <IconCard
           className=""
           icon={faPersonRunning}
-          title={getTypeOccurences("running")}
+          title={getTypeOccurences("running generic")}
           subTitle={"activities"}
         />
         <IconCard
@@ -240,7 +240,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
       <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <IconCard
           icon={faPersonHiking}
-          title={getTypeOccurences("walking")}
+          title={getTypeOccurences("walking generic")}
           subTitle={"activities"}
         />
         <IconCard
@@ -258,7 +258,7 @@ function GeneralInfoBlock({ countries, cities, types }) {
         <div>
           <IconCard
             icon={faPersonBiking}
-            title={getTypeOccurences("cycling")}
+            title={getTypeOccurences("cycling generic")}
             subTitle={"activities"}
           />
         </div>

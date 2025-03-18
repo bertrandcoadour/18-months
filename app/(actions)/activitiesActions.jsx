@@ -216,12 +216,13 @@ export const getActivitiesTypes = cache(async () => {
   try {
     const allTypes = await prisma.Activity.findMany({
       select: {
-        sport: true, // Only select the type related to each activity
+        sport: true, // Only select the sport and the subSport related to each activity
+        subSport: true,
       },
     });
 
     const flattenTypes = allTypes
-      .flatMap((type) => type.sport)
+      .flatMap((type) => type.sport + " " + type.subSport)
       .filter((sport) => sport != null);
 
     return countOccurencesOfEntries(flattenTypes);
@@ -235,7 +236,8 @@ export const getActivitiesTypesInCountry = cache(async (country) => {
   try {
     const allTypes = await prisma.Activity.findMany({
       select: {
-        sport: true, // Only select the type related to each activity
+        sport: true, // Only select the sport and the subSport related to each activity
+        subSport: true,
       },
       where: {
         country: country,
@@ -243,7 +245,7 @@ export const getActivitiesTypesInCountry = cache(async (country) => {
     });
 
     const flattenTypes = allTypes
-      .flatMap((type) => type.sport)
+      .flatMap((type) => type.sport + " " + type.subSport)
       .filter((sport) => sport != null);
 
     return countOccurencesOfEntries(flattenTypes);

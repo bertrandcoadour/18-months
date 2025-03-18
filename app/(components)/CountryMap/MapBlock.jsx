@@ -63,8 +63,9 @@ function MapBlock({ shape, activities }) {
           onSelectedMarker={onSelectedActivity}
         />
       </div>
-
-      <SelectedActivitiesBlock selectedActivities={selectedActivities} />
+      <div className="flex max-h-[650px] overflow-auto">
+        <SelectedActivitiesBlock selectedActivities={selectedActivities} />
+      </div>
     </div>
   );
 }

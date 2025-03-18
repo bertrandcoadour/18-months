@@ -19,7 +19,15 @@ export function convertMetersToKms(distance) {
 }
 
 export function convertSecondsToHoursMinutesSeconds(timeInSec) {
-  return new Date(timeInSec * 1000).toISOString().substring(11, 19);
+  const hours = Math.floor(timeInSec / 3600);
+  const minutes = Math.floor((timeInSec % 3600) / 60);
+  const seconds = Math.floor(timeInSec % 60);
+
+  const hoursStr = String(hours).padStart(2, "0");
+  const minutesStr = String(minutes).padStart(2, "0");
+  const secondsStr = String(seconds).padStart(2, "0");
+
+  return `${hoursStr}:${minutesStr}:${secondsStr}`;
 }
 
 export function convertMetersPerSecondsToPace(speedInMetersPerSeconds) {

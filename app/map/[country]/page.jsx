@@ -18,11 +18,12 @@ export default async function CountryMap({ params, searchParams }) {
   );
 
   const filteredActivities = activities.filter(
-    (activity) => activity.sport === filters.sport
+    (activity) =>
+      activity.sport === filters.sport && activity.subSport === filters.subSport
   );
 
   return (
-    <div className="flex-flex-col gap-2 h-screen">
+    <div className="flex-flex-col gap-2 h-full">
       <div className="flex flex-col sm:flex-row  justify-between">
         <CountryInfoBlock
           country={decodeURIComponent(country)}
@@ -34,14 +35,11 @@ export default async function CountryMap({ params, searchParams }) {
 
         <hr className="h-px border-1 bg-activityList  m-2 visible sm:hidden" />
 
-        <CountryFilterBlock
-          country={decodeURIComponent(country)}
-          sportTypes={fetchedTypes}
-          activities={activities}
-        />
+        <CountryFilterBlock sportTypes={fetchedTypes} />
       </div>
-      <div className="grid grid-cols-1  gap-2 row-span-5">
-        <div className="row-span-1">
+
+      <div className="grid grid-rows-5">
+        <div className="row-span-4 px-4">
           <MapBlock
             shape={shape}
             activities={
@@ -49,6 +47,7 @@ export default async function CountryMap({ params, searchParams }) {
             }
           />
         </div>
+        <div className="row-span-1"></div>
       </div>
     </div>
   );

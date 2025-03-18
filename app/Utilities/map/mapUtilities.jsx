@@ -166,8 +166,6 @@ export async function getClosestCitiesInCountryFromLocation(
 
   foundCities.sort((a, b) => a.distance - b.distance);
 
-  console.log(foundCities);
-
   return foundCities.length <= 10 ? foundCities : foundCities.slice(0, 10);
 }
 
