@@ -4,12 +4,20 @@ import { getActivityIcon } from "@/app/Utilities/Icons/Icons";
 import { info_to_display } from "@/app/Utilities/InfoToDisplay/InfoToDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MapBlock from "@/app/(components)/ActivityMap/MapBlock";
-import { faPen, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faLocationDot, faBan } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 async function ActivityPage({ params }) {
   const { id } = await params;
   const activity = await getActivityById(id);
+
+  const displayMap = info_to_display.find(
+    (info) => info.sport == activity.sport && info.subSport == activity.subSport
+  )?.enable_map;
+
+  const displayEdition = info_to_display.find(
+    (info) => info.sport == activity.sport && info.subSport == activity.subSport
+  )?.enable_edition;
 
   return (
     <div className="flex flex-col h-full gap-2 p-4">
@@ -25,26 +33,30 @@ async function ActivityPage({ params }) {
             <div className="text-xl md:text-2xl lg:text-3xl font-normal p-1 text-center">
               {activity.title}
             </div>
-            <div className="flex gap-2 self-center ">
-              <div className="max-md:hidden p-1">
-                <FontAwesomeIcon icon={faLocationDot} size="xl" />
-              </div>
+            {activity.city && activity.coutry && (
+              <div className="flex gap-2 self-center ">
+                <div className="max-md:hidden p-1">
+                  <FontAwesomeIcon icon={faLocationDot} size="xl" />
+                </div>
 
-              <span className="text-sm md:text-base lg:text-xl font-normal p-1 text-center">
-                {activity.city + ", " + activity.country}
-              </span>
-            </div>
+                <span className="text-sm md:text-base lg:text-xl font-normal p-1 text-center">
+                  {activity.city + ", " + activity.country}
+                </span>
+              </div>
+            )}
           </div>
         </div>
-        <Link
-          className="self-center hover:cursor-pointer hover:text-slate-900 pl-3"
-          href={`/activities/${activity.id}/edit`}
-        >
-          <label className="pr-2 hover:cursor-pointer max-lg:hidden">
-            Edit
-          </label>
-          <FontAwesomeIcon icon={faPen} />
-        </Link>
+        {displayEdition && (
+          <Link
+            className="self-center hover:cursor-pointer hover:text-slate-900 pl-3"
+            href={`/activities/${activity.id}/edit`}
+          >
+            <label className="pr-2 hover:cursor-pointer max-lg:hidden">
+              Edit
+            </label>
+            <FontAwesomeIcon icon={faPen} />
+          </Link>
+        )}
       </div>
       <hr className="h-px border-1 bg-activityList mb-2" />
 
@@ -64,7 +76,15 @@ async function ActivityPage({ params }) {
             ))
         )}
       </div>
-      <MapBlock activity={activity} />
+      {displayMap && <MapBlock activity={activity} />}
+      {!displayMap && (
+        <div className="flex flex-col h-screen gap-4 justify-center">
+          <div className="flex flex-row gap-4 self-center">
+            <FontAwesomeIcon icon={faBan} size="2xl" className="icon " />
+            <h3>No map and charts to display.</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

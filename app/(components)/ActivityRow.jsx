@@ -8,6 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 function ActivityRow({ activity, size }) {
+  const displayEdition = info_to_display.find(
+    (info) => info.sport == activity.sport && info.subSport == activity.subSport
+  )?.enable_edition;
+
   return (
     <div className="flex flex-row">
       <div
@@ -31,9 +35,11 @@ function ActivityRow({ activity, size }) {
               {activity.title}
             </div>
 
-            <div className="font-medium text-xs text-start">
-              {activity.city + ", " + activity.country}
-            </div>
+            {activity.city && activity.country && (
+              <div className="font-medium text-xs text-start">
+                {activity.city + ", " + activity.country}
+              </div>
+            )}
           </Link>
         </div>
 
@@ -66,12 +72,15 @@ function ActivityRow({ activity, size }) {
           "lg:flex-row lg:invisible lg:group-hover/item:visible lg:border-l"
         } gap-3 p-2 visible  self-center `}
       >
-        <Link
-          className="hover:cursor-pointer hover:text-slate-900"
-          href={`/activities/${activity.id}/edit`}
-        >
-          <FontAwesomeIcon icon={faPen} />
-        </Link>
+        {displayEdition && (
+          <Link
+            className="hover:cursor-pointer hover:text-slate-900"
+            href={`/activities/${activity.id}/edit`}
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </Link>
+        )}
+
         <DeleteBlock id={activity.id} />
       </div>
     </div>

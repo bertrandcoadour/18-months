@@ -57,6 +57,8 @@ export const info_to_display = [
     sport: "walking",
     subSport: "generic",
     items: [date, distance, time, average_pace, average_heart_rate, calories],
+    enable_map: true,
+    enable_edition: true,
   },
   {
     sport: "running",
@@ -69,6 +71,8 @@ export const info_to_display = [
       total_ascent,
       average_heart_rate,
     ],
+    enable_map: true,
+    enable_edition: true,
   },
   {
     sport: "running",
@@ -81,20 +85,28 @@ export const info_to_display = [
       total_ascent,
       average_heart_rate,
     ],
+    enable_map: true,
+    enable_edition: true,
   },
   {
     sport: "cycling",
     subSport: "generic",
     items: [date, distance, time, average_pace_cycling, total_ascent, calories],
+    enable_map: true,
+    enable_edition: true,
   },
   {
     sport: "swimming",
-    subSport: "generic",
+    subSport: "lapSwimming",
     items: [date, distance, time, average_pace, average_heart_rate, calories],
+    enable_map: false,
+    enable_edition: false,
   },
   {
     sport: "training",
     subSport: "cardioTraining",
     items: [date, time, average_heart_rate, maximum_heart_rate, calories],
+    enable_map: false,
+    enable_edition: false,
   },
 ];

@@ -54,11 +54,11 @@ export function convertActivityTypeToDBType(activityType) {
     case "Running":
       return { sport: "running", subSport: "generic" };
     case "Trail running":
-      return { sport: "trail", subSport: "generic" };
+      return { sport: "running", subSport: "trail" };
     case "Cycling":
       return { sport: "cycling", subSport: "generic" };
     case "Swimming":
-      return { sport: "swimming", subSport: "generic" };
+      return { sport: "swimming", subSport: "lapSwimming" };
     case "Cardio training":
       return { sport: "training", subSport: "cardioTraining" };
     default:

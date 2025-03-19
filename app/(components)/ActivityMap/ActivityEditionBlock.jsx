@@ -13,13 +13,9 @@ import {
 } from "@/app/Utilities/Icons/Icons";
 import {
   getAllCountries,
-  getCitiesFromCountry,
   getCityLatAndLong,
 } from "@/app/(actions)/countriesActions";
-import {
-  getCitiesWithinKilometers,
-  getClosestCitiesInCountryFromLocation,
-} from "@/app/Utilities/map/mapUtilities";
+import { getClosestCitiesInCountryFromLocation } from "@/app/Utilities/map/mapUtilities";
 import {
   updateActivityCity,
   updateActivityCountry,
@@ -32,9 +28,9 @@ import Loading from "../Loading";
 function ActivityEditionBlock({ activity }) {
   const router = useRouter();
 
-  const [type, setType] = useState(
-    getActivityDescription(activity.sport, activity.subSport)
-  );
+  // const [type, setType] = useState(
+  //   getActivityDescription(activity.sport, activity.subSport)
+  // );
   const [title, setTitle] = useState(activity.title);
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
@@ -44,9 +40,9 @@ function ActivityEditionBlock({ activity }) {
   const [locationLong, setLocationLong] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false); // State for button enabled/disabled
 
-  const activityTypesOptions = activity_types_icons
-    .filter((item) => item.description && item.label != "All")
-    .map((item) => item.description);
+  // const activityTypesOptions = activity_types_icons
+  //   .filter((item) => item.description && item.label != "All")
+  //   .map((item) => item.description);
 
   const distancesAndCoord = useMemo(() => {
     return getAllDistancesAndCoordinates(activity.records);
@@ -113,9 +109,9 @@ function ActivityEditionBlock({ activity }) {
     validateForm();
   }); //check the form validity as soon as something is updated of the page
 
-  const handleTypeChanged = (event) => {
-    setType(event);
-  };
+  // const handleTypeChanged = (event) => {
+  //   setType(event);
+  // };
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -131,9 +127,7 @@ function ActivityEditionBlock({ activity }) {
   };
 
   const validateForm = () => {
-    title && type && country && city
-      ? setIsFormValid(true)
-      : setIsFormValid(false);
+    title && country && city ? setIsFormValid(true) : setIsFormValid(false);
   };
 
   const handleCancel = (event) => {
@@ -144,12 +138,12 @@ function ActivityEditionBlock({ activity }) {
   const handleSubmit = () => {
     const submit = async () => {
       await updateActivityTitle(activity.id, title);
-      const activitySport = convertActivityTypeToDBType(type);
-      await updateActivityType(
-        activity.id,
-        activitySport.sport,
-        activitySport.subSport
-      );
+      // const activitySport = convertActivityTypeToDBType(type);
+      // await updateActivityType(
+      //   activity.id,
+      //   activitySport.sport,
+      //   activitySport.subSport
+      // );
       await updateActivityCity(activity.id, city);
       await updateActivityCountry(activity.id, country);
 
@@ -169,7 +163,7 @@ function ActivityEditionBlock({ activity }) {
           Edit your activity
         </label>
         <hr className="h-px border-1 bg-activityList mb-2" />
-        <div className="flex flex-col w-full max-w-80">
+        {/* <div className="flex flex-col w-full max-w-80">
           <span>Activity Type : </span>
           <Dropdown
             options={activityTypesOptions}
@@ -177,7 +171,7 @@ function ActivityEditionBlock({ activity }) {
             value={type}
             name="type"
           />
-        </div>
+        </div> */}
         <div className="flex flex-col w-full max-w-80">
           <span>Title : </span>
           <textarea
