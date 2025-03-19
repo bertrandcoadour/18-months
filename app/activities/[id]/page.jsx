@@ -20,22 +20,22 @@ async function ActivityPage({ params }) {
   )?.enable_edition;
 
   return (
-    <div className="flex flex-col h-full gap-2 p-4">
+    <div className="flex flex-col h-full gap-2 p-2">
       <div className="flex  justify-around md:justify-between">
-        <div className="flex lg:gap-14 md:gap-7 gap-5">
+        <div className="flex lg:gap-14 md:gap-7 gap-5 items-center">
           <span className="pl-3 self-center ">
             <FontAwesomeIcon
               size="2xl"
               icon={getActivityIcon(activity.sport, activity.subSport)}
             />
           </span>
-          <div className="flex flex-col  md:flex-row  gap-x-14">
+          <div className="flex flex-col  md:flex-row  gap-x-14 items-center">
             <div className="text-xl md:text-2xl lg:text-3xl font-normal p-1 text-center">
               {activity.title}
             </div>
-            {activity.city && activity.coutry && (
-              <div className="flex gap-2 self-center ">
-                <div className="max-md:hidden p-1">
+            {activity.city && activity.country && (
+              <div className="flex gap-2 items-center ">
+                <div className="flex max-md:hidden p-1 self-center">
                   <FontAwesomeIcon icon={faLocationDot} size="xl" />
                 </div>
 

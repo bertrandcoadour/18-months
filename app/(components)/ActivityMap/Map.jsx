@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import AllTrack from "./AllTrack";
@@ -17,44 +17,53 @@ export default function Map({
   hoveredKmCoords,
   cityCoords,
 }) {
+  const [selectedKmFeature, setSelectedKmFeature] = useState(null);
+  const [hoveredKmFeature, setHoveredKmFeature] = useState(null);
+
+  useEffect(() => {
+    setSelectedKmFeature({
+      type: "Feature",
+      properties: {
+        name: "Selected kilometer",
+        type: "running",
+      },
+      geometry: {
+        type: "LineString",
+        coordinates: selectedKmCoords,
+      },
+    });
+  }, [selectedKmCoords]);
+
+  useEffect(() => {
+    setHoveredKmFeature({
+      type: "Feature",
+      properties: {
+        name: "Hovered kilometer",
+        type: "running",
+      },
+      geometry: {
+        type: "LineString",
+        coordinates: hoveredKmCoords,
+      },
+    });
+  }, [hoveredKmCoords]);
+
   // a geojson feature for the full activity track
-  var fullTrackGeojsonFeature = {
-    type: "Feature",
-    properties: {
-      name: "All track",
-      type: "running",
-    },
-    geometry: {
-      type: "LineString",
-      coordinates: fullTrackCoords,
-    },
-  };
+  let fullTrackGeojsonFeature = null;
 
-  //a geojson feature for the selected kilometer
-  var selectedKmGeojsonFeature = {
-    type: "Feature",
-    properties: {
-      name: "Selected kilometer",
-      type: "running",
-    },
-    geometry: {
-      type: "LineString",
-      coordinates: selectedKmCoords,
-    },
-  };
-
-  //a geojson feature for the hovered kilometer
-  var hoveredKmGeojsonFeature = {
-    type: "Feature",
-    properties: {
-      name: "Hovered kilometer",
-      type: "running",
-    },
-    geometry: {
-      type: "LineString",
-      coordinates: hoveredKmCoords,
-    },
-  };
+  if (fullTrackCoords) {
+    fullTrackGeojsonFeature = {
+      type: "Feature",
+      properties: {
+        name: "All track",
+        type: "running",
+      },
+      geometry: {
+        type: "LineString",
+        coordinates: fullTrackCoords,
+      },
+    };
+  }
 
   return (
     <MapContainer
@@ -71,12 +80,14 @@ export default function Map({
         <StartAndFinishMarkers data={fullTrackCoords} />
       )}
       {cityCoords.length > 0 && <CityMarkers data={cityCoords} />}
-      <AllTrack data={fullTrackGeojsonFeature} />
-      <ClickedSegment
-        data={selectedKmGeojsonFeature}
-        fullTrackCoords={fullTrackCoords}
-      />
-      <HoveredSegment data={hoveredKmGeojsonFeature} />
+      {fullTrackCoords && <AllTrack data={fullTrackGeojsonFeature} />}
+      {selectedKmFeature && (
+        <ClickedSegment
+          data={selectedKmFeature}
+          fullTrackCoords={fullTrackCoords}
+        />
+      )}
+      {hoveredKmFeature && <HoveredSegment data={hoveredKmFeature} />}
     </MapContainer>
   );
 }

@@ -20,7 +20,6 @@ import {
 import {
   convertMetersPerSecondsToPace,
   convertMetersToKms,
-  filterOutliers,
 } from "../../Utilities/Global/convertData";
 import { useEffect, useState } from "react";
 import Chart from "./Chart";

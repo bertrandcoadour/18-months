@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 
 const AllTrack = ({ data }) => {
   const map = useMap();
 
-  //if there is already the full track layer, no need to add it to the map
+  //if there is already the full track layer, it must no be added again, return.
   var layers = [];
   map.eachLayer((layer) => {
     if (layer.feature) layers.push(layer);
@@ -22,12 +21,6 @@ const AllTrack = ({ data }) => {
     weight: 3,
     opacity: 0.65,
   };
-
-  // useEffect(() => {
-  //   L.geoJSON(data, {
-  //     style: myStyle,
-  //   }).addTo(map);
-  // }, [data, map]);
 
   L.geoJSON(data, {
     style: myStyle,

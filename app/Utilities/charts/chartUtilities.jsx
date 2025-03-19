@@ -271,6 +271,26 @@ export function getAllDistancesAndAltitudes(records) {
   return data;
 }
 
+//for each record of the session, retrieve the distance and the associated heart rates
+// input : records, contain all data from the session
+// output : array of object with distances and heart rates
+
+export function getAllDistancesAndHeartRates(records) {
+  let data = [];
+
+  records.forEach((record) => {
+    const distance = convertMetersToKms(record?.distance);
+    const heartRate = Math.round(record?.heartRate);
+    heartRate > 0 &&
+      data.push({
+        distance: distance,
+        heartRate: heartRate,
+      });
+  });
+
+  return data;
+}
+
 //retrieve the coordinates betwwen two kilometers
 // input : coordinates, array of object with distances, longitudes and latitudes
 // input : start, the distance from which to start the search, in meters

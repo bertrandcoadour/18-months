@@ -10,11 +10,11 @@ import {
   Label,
 } from "recharts";
 
-function AltitudeChart({ data }) {
-  const maxAltitudeValue = Math.max(...data.map((item) => item.altitude));
-  const altitudeMax = maxAltitudeValue + 0.05 * maxAltitudeValue;
-  const minAltitudeValue = Math.min(...data.map((item) => item.altitude));
-  const altitudeMin = minAltitudeValue - 0.05 * minAltitudeValue;
+function HeartRateChart({ data }) {
+  const maxHRValue = Math.max(...data.map((item) => item.heartRate));
+  const heartRateMax = maxHRValue + 0.05 * maxHRValue;
+  const minHRValue = Math.min(...data.map((item) => item.heartRate));
+  const heartRateMin = minHRValue - 0.05 * minHRValue;
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -25,9 +25,9 @@ function AltitudeChart({ data }) {
             <span className="font-bold text-xs text-slate-300">
               {`${payload[0].payload.distance} km`}
             </span>
-            <span className="text-xs uppercase text-cyan-500">ALTITUDE</span>
-            <span className="font-bold text-xs text-cyan-500">
-              {`${payload[0].payload.altitude} m`}
+            <span className="text-xs uppercase text-red-600">HEART RATE</span>
+            <span className="font-bold text-xs text-red-600">
+              {`${payload[0].payload.heartRate} m`}
             </span>
           </div>
         </div>
@@ -44,7 +44,7 @@ function AltitudeChart({ data }) {
         margin={{
           top: 0,
           right: 25,
-          left: -5,
+          left: -10,
           bottom: 0,
         }}
       >
@@ -55,33 +55,27 @@ function AltitudeChart({ data }) {
           tickFormatter={(value) => {
             return `${Math.round(value)} km`;
           }}
-          // domain={[
-          //   Math.min(...data.map((item) => item.distance)),
-          //   Math.max(...data.map((item) => item.distance)),
-          // ]} // Set the domain based on min/max distances
-          //interval={3} // Or specify a numeric interval
-          //tickFormatter={(value) => `${value} km`}
         />
         <YAxis
           axisLine={true}
           type="number"
-          domain={[altitudeMin, altitudeMax]}
+          domain={[heartRateMin, heartRateMax]}
           tickFormatter={(value) => {
             return Math.round(value);
           }}
         >
-          <Label angle={-90} dx={-21} value="altitude (m)" />
+          <Label angle={-90} dx={-15} value="heart rate" />
         </YAxis>
         <Tooltip content={<CustomTooltip />} cursor={{ fill: "#384454" }} />
         <Area
           type="monotone"
-          dataKey="altitude"
-          stroke="#21618c"
-          fill="#2e86c1"
+          dataKey="heartRate"
+          stroke="#b03a2e"
+          fill="#cb4335"
         />
       </AreaChart>
     </ResponsiveContainer>
   );
 }
 
-export default AltitudeChart;
+export default HeartRateChart;

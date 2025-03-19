@@ -12,14 +12,16 @@ import {
   getAveragePaceForEachKm,
   getRelevantElevationData,
   getCoordinatesBetween,
+  getAllDistancesAndHeartRates,
 } from "../../Utilities/charts/chartUtilities";
 import ElevationGainLossChart from "../Charts/ElevationGainLossChart";
 import AltitudeChart from "../Charts/AltitudeChart";
 import Loading from "../Loading";
+import HeartRateChart from "../Charts/HeartRateChart";
 
 function MapBlock({ activity }) {
-  const [selectedKmCoords, setSelectedKmCoords] = useState([]);
-  const [hoveredKmCoords, setHoveredKmCoords] = useState([]);
+  const [selectedKmCoords, setSelectedKmCoords] = useState(null);
+  const [hoveredKmCoords, setHoveredKmCoords] = useState(null);
 
   //with useMemo, the coordinates are cached so that this expensive calculation is not performed every time the component re-render
   //(which is every time the user hover over a km in the paceChart, ie a lot of time)
@@ -47,6 +49,10 @@ function MapBlock({ activity }) {
   const altitudeData = useMemo(() => {
     return getRelevantElevationData(distancesAndAltitude, 3);
   }, [distancesAndAltitude]);
+
+  const distancesAndHeartRates = useMemo(() => {
+    return getAllDistancesAndHeartRates(activity.records);
+  }, [activity.records]);
 
   const ClientMap = useMemo(
     () =>
@@ -78,7 +84,7 @@ function MapBlock({ activity }) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
       <div className="grid grid-rows-3 gap-3">
         <div className="row-span-2">
           {coordinates && (
@@ -95,20 +101,23 @@ function MapBlock({ activity }) {
         </div>
       </div>
 
-      <div className="grid grid-rows-3 gap-2">
-        <div>
+      <div className="grid grid-rows-3 gap-1">
+        <div className="row-span-1">
           <PaceChart
             data={averagePaceData}
             onKmSelected={handleDistanceSelected}
             onKmHovered={handleDistanceHovered}
           />
         </div>
-        <div>
+        <div className="row-span-1">
           <ElevationGainLossChart
             data={ascentDescentData}
             onKmSelected={handleDistanceSelected}
             onKmHovered={handleDistanceHovered}
           />
+        </div>
+        <div className="row-span-1">
+          <HeartRateChart data={distancesAndHeartRates} />
         </div>
       </div>
     </div>
