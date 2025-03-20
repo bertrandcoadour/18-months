@@ -11,7 +11,7 @@ export default async function Home() {
         </h1>
         <p className="text-lg text-gray-400">
           For 18 months, I traveled the world, exploring continents on foot and
-          wheels. Now, I've transformed those journeys into a digital map, a
+          wheels. Now, I have transformed those journeys into a digital map, a
           personal archive of every run, hike, and bike ride. Dive into the data
           and relive the adventure with me.
         </p>
