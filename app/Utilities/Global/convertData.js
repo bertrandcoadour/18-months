@@ -70,3 +70,41 @@ export function convertActivityTypeToDBType(activityType) {
       return null;
   }
 }
+
+export function convertStringifiedDBTypeToActivityType(dbType) {
+  switch (dbType) {
+    case "walking generic":
+      return "Walking";
+    case "running generic":
+      return "Running";
+    case "running trail":
+      return "Trail running";
+    case "cycling generic":
+      return "Cycling";
+    case "swimming lapSwimming":
+      return "Swimming";
+    case "training cardioTraining":
+      return "Cardio training";
+    default:
+      return null;
+  }
+}
+
+export function convertDBTypeToActivityType(dbType) {
+  switch (dbType) {
+    case { sport: "walking", subSport: "generic" }:
+      return "Walking";
+    case { sport: "running", subSport: "generic" }:
+      return "Running";
+    case { sport: "running", subSport: "trail" }:
+      return "Trail running";
+    case { sport: "cycling", subSport: "generic" }:
+      return "Cycling";
+    case { sport: "swimming", subSport: "lapSwimming" }:
+      return "Swimming";
+    case { sport: "training", subSport: "cardioTraining" }:
+      return "Cardio training";
+    default:
+      return null;
+  }
+}

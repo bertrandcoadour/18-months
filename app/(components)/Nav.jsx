@@ -21,9 +21,7 @@ const Nav = () => {
           <FontAwesomeIcon icon={faPersonRunning} className="icon" />
         </Link>
       </div>
-      <div>
-        <p className="text-default-text"> email@gmail.com</p>
-      </div>
+      <div></div>
     </nav>
   );
 };

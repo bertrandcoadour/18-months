@@ -15,14 +15,7 @@ import {
   faGaugeHigh,
   faPersonBiking,
   faMountain,
-  faPersonSwimming,
-  faDumbbell,
-  faNotdef,
-  faPerson,
-  faPersonWalking,
   faPersonHiking,
-  faBan,
-  faArrowRight,
   faTruckFast,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,6 +34,7 @@ import {
   walkingActivitiesTotalDistance,
 } from "@/app/(actions)/activitiesActions";
 import IconCard from "../IconCard";
+import { convertStringifiedDBTypeToActivityType } from "@/app/Utilities/Global/convertData";
 
 function GeneralInfoBlock({ countries, cities, types }) {
   const [walkingDistance, setWalkingDistance] = useState(0);
@@ -206,7 +200,9 @@ function GeneralInfoBlock({ countries, cities, types }) {
         />
         <IconCard
           icon={faRankingStar}
-          title={mostFrequentType.entryName}
+          title={convertStringifiedDBTypeToActivityType(
+            mostFrequentType.entryName
+          )}
           subTitle={"favourite activity"}
         />
         <IconCard

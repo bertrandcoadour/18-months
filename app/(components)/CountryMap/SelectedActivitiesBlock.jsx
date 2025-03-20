@@ -5,26 +5,8 @@ import ActivityRow from "../ActivityRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function SelectedActivitiesBlock({ selectedActivities }) {
-  //console.log(selectedActivities);
-
-  // function groupActivitiesBySport(activities) {
-  //   const groupedActivities = {};
-
-  //   activities.forEach((activity) => {
-  //     const sport = activity.sport;
-
-  //     if (!groupedActivities[sport]) {
-  //       groupedActivities[sport] = [];
-  //     }
-
-  //     groupedActivities[sport].push(activity);
-  //   });
-
-  //   return groupedActivities;
-  // }
-
   return (
-    <div className="flex w-full px-1 overflow-x-hidden overflow-y-auto justify-center">
+    <div className="flex w-full px-1 overflow-x-hidden overflow-y-auto justify-center p-4">
       {selectedActivities.length < 1 && (
         <div className="flex flex-col gap-4 justify-center">
           <div className="flex flex-row gap-4">

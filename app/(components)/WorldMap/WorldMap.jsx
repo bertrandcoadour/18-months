@@ -4,7 +4,6 @@ import qs from "query-string";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import CountryShapes from "./CountryShapes";
-import { getCountryShape } from "@/app/(actions)/countriesActions";
 import CustomLegend from "./CustomLegend";
 
 export default function WorldMap({ countries }) {

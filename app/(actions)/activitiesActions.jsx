@@ -3,7 +3,10 @@
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
-import { countOccurencesOfEntries } from "../Utilities/Global/arrayManipulation";
+import {
+  countObjectOccurrences,
+  countOccurencesOfEntries,
+} from "../Utilities/Global/arrayManipulation";
 import {
   convertMetersPerSecondsToPace,
   convertMetersToKms,
