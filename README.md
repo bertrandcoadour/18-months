@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 18-months
 
-## Getting Started
+[Deployed Link](https://18-months.vercel.app/)
 
-First, run the development server:
+Visualize my 18-month adventure through sports activities! This project aggregates and displays hiking, running and cycling data from my Garmin account, offering a different perspective on my travels from March 2023 to August 2024.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## About 18-months
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+I traveled for one and a half years around the world, between March 2023 and August 2024.
+I visitied numerous countries by various means of transportation. In all of them, I hiked and ran a lot.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+As a software engineer with 7 years of experience and a passion for web development, I looked for a personal project to enhance my skills.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+That's how I got the idea of 18-months : download all my sport activities, stored on my Garmin account, and create a nice app
+to vizualize them, compare them, filter them...
 
-## Learn More
+Starting late December 2024, I proudly deployed the first version of 18-months by the end of March 20225.
+I will still be working on it in the next following months !
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Front-end:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Next.js
+- React
+- Tailwind CSS
 
-## Deploy on Vercel
+**Back-end:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js (API Routes)
+- MongoDB
+- Prisma
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Deployment:**
+
+- Vercel
+
+**Libraries & SDKs:**
+
+- Garmin Fit SDK (for decoding Garmin files)
+- Leaflet (for interactive maps)
+- Recharts (for interactive charts)
+- Font Awesome (for icons)
