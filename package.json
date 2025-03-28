@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate --schema='src/prisma/schema.prisma'"
   },
   "dependencies": {
     "-": "^0.0.1",
