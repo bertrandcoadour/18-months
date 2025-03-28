@@ -23,6 +23,7 @@ export default function WorldMap({ countries }) {
         return await res.json();
       },
       enabled: !!country?.entryName, // Only fetch if country has a name
+      staleTime: 1000 * 60 * 5, ////for 5min, the data is considered valid to be retrieve from cache
     })),
   });
 
