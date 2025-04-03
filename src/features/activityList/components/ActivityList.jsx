@@ -45,8 +45,8 @@ function ActivityList({ params }) {
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 60,
-    //overscan: 5,
+    estimateSize: () => 80,
+    overscan: 5,
   });
 
   const virtualItems = rowVirtualizer.getVirtualItems();

@@ -117,7 +117,14 @@ model Activity {
   updatedAt                        DateTime @updatedAt
   createdAt                        DateTime @default(now())
 
-  @@index (fields: [timestamp,totalDistance,totalElapsedTime, totalCalories, enhancedAvgSpeed, totalAscent])
+  @@index (fields: [totalDistance,totalElapsedTime, totalCalories, enhancedAvgSpeed, totalAscent])
+
+  @@index([totalDistance, timestamp(sort: Desc)])
+  @@index([totalElapsedTime, timestamp(sort: Desc)])
+  @@index([totalCalories, timestamp(sort: Desc)])
+  @@index([enhancedAvgSpeed, timestamp(sort: Desc)])
+  @@index([totalAscent, timestamp(sort: Desc)])
+  @@index([timestamp(sort: Desc)])
 }
 
 // model GPXFile {
