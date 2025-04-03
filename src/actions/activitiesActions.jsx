@@ -14,71 +14,52 @@ import {
 } from "../utils/Global/convertData";
 import { getAllCoordinates } from "../utils/charts/chartUtilities";
 
-// export const getActivitiesCountries = cache(async () => {
-//   try {
-//     const allCountries = await prisma.Activity.findMany({
-//       select: {
-//         country: true, // Only select the country related to each activity
-//       },
-//     });
+export async function getActivities(params, limit, offset = 0) {
+  try {
+    const { sport, subSport, sort_by, sort_order, search } = await params;
 
-//     console.log(allCountries);
+    let query = {};
 
-//     const flattenCountries = allCountries
-//       .flatMap((country) => country.country)
-//       .filter((country) => country != null);
-
-//     return countOccurencesOfEntries(flattenCountries);
-//   } catch (error) {
-//     console.error("Error fetching countries:", error);
-//     throw error; // Re-throw the error for handling outside if needed
-//   }
-// });
-
-export const getActivities = unstable_cache(
-  async (params) => {
-    try {
-      const { sport, subSport, sort_by, sort_order, search } = await params;
-
-      let query = {};
-
-      if (sport) {
-        query.sport = sport;
-      }
-
-      if (subSport) {
-        query.subSport = subSport;
-      }
-
-      if (search) {
-        query.title = {
-          contains: search,
-        };
-      }
-
-      //console.log(query);
-
-      let query_order = {};
-
-      if (sort_by && sort_order) query_order[sort_by] = sort_order;
-      else query_order["timestamp"] = "desc";
-
-      return await prisma.Activity.findMany({
-        where: query,
-        //take: 50,
-        orderBy: query_order,
-        omit: {
-          records: true,
-          laps: true,
-        },
-      });
-    } catch (error) {
-      throw new Error(error.message);
+    if (sport) {
+      query.sport = sport;
     }
-  },
-  ["activities"],
-  { revalidate: 10, tags: ["activities"] }
-);
+
+    if (subSport) {
+      query.subSport = subSport;
+    }
+
+    if (search) {
+      query.title = {
+        contains: search,
+      };
+    }
+
+    //console.log(query);
+
+    let query_order = {};
+
+    if (sort_by && sort_order) query_order[sort_by] = sort_order;
+    else query_order["timestamp"] = "desc";
+
+    const rows = await prisma.Activity.findMany({
+      where: query,
+      take: limit, // Correct: Fetch 'limit' number of records per page
+      skip: offset * limit, // Correct: Skip the records from previous pages
+      orderBy: query_order,
+      omit: {
+        records: true,
+        laps: true,
+      },
+    });
+
+    return { rows, nextOffset: offset + 1 };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+
+  // ["activities"],
+  // { revalidate: 300, tags: ["activities"] }
+}
 
 export async function getActivityById(_id) {
   try {
@@ -183,15 +164,38 @@ export async function updateActivityCity(_id, newCity) {
   }
 }
 
-// export const getActivitiesCountries = cache(async () => {
+export const getActivitiesCountries = unstable_cache(
+  async () => {
+    console.log("fetching countries...");
+    try {
+      const allCountries = await prisma.Activity.findMany({
+        select: {
+          country: true, // Only select the country related to each activity
+        },
+      });
+
+      const flattenCountries = allCountries
+        .flatMap((country) => country.country)
+        .filter((country) => country != null);
+
+      return countOccurencesOfEntries(flattenCountries);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+      throw error; // Re-throw the error for handling outside if needed
+    }
+  },
+  ["activitiesCountries"],
+  { revalidate: 300, tags: ["activitiesCountries"] }
+);
+
+// export async function getActivitiesCountries() {
+//   console.log("fetching countries...");
 //   try {
 //     const allCountries = await prisma.Activity.findMany({
 //       select: {
 //         country: true, // Only select the country related to each activity
 //       },
 //     });
-
-//     console.log(allCountries);
 
 //     const flattenCountries = allCountries
 //       .flatMap((country) => country.country)
@@ -202,26 +206,7 @@ export async function updateActivityCity(_id, newCity) {
 //     console.error("Error fetching countries:", error);
 //     throw error; // Re-throw the error for handling outside if needed
 //   }
-// });
-
-export async function getActivitiesCountries() {
-  try {
-    const allCountries = await prisma.Activity.findMany({
-      select: {
-        country: true, // Only select the country related to each activity
-      },
-    });
-
-    const flattenCountries = allCountries
-      .flatMap((country) => country.country)
-      .filter((country) => country != null);
-
-    return countOccurencesOfEntries(flattenCountries);
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-    throw error; // Re-throw the error for handling outside if needed
-  }
-}
+// }
 
 export const getActivitiesCities = cache(async () => {
   try {

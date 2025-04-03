@@ -168,3 +168,47 @@ export function getMetrics(activities, sport) {
       return null;
   }
 }
+
+export default function sortActivities(activities, queryString = "") {
+  if (!activities || activities.length === 0) {
+    return []; // Return empty array for null or empty input
+  }
+
+  let sortBy = "timestamp";
+  let sortOrder = "desc"; // Default sort order
+
+  if (queryString) {
+    const params = new URLSearchParams(queryString);
+    const sortByParam = params.get("sort_by");
+    const sortOrderParam = params.get("sort_order");
+
+    if (sortByParam) {
+      sortBy = sortByParam;
+    }
+    if (sortOrderParam) {
+      sortOrder = sortOrderParam.toLowerCase(); // Ensure case-insensitive comparison
+    }
+  }
+
+  return activities.slice().sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (aValue === undefined || bValue === undefined) {
+      // Handle cases where the property doesn't exist on one or both objects
+      if (aValue === undefined && bValue === undefined) return 0; // both undefined, no change
+      if (aValue === undefined) return 1; // b comes first
+      if (bValue === undefined) return -1; // a comes first
+    }
+
+    if (sortOrder === "asc") {
+      if (aValue < bValue) return -1;
+      if (aValue > bValue) return 1;
+      return 0;
+    } else {
+      if (aValue < bValue) return 1;
+      if (aValue > bValue) return -1;
+      return 0;
+    }
+  });
+}

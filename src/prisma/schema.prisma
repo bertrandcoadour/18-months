@@ -116,6 +116,8 @@ model Activity {
 
   updatedAt                        DateTime @updatedAt
   createdAt                        DateTime @default(now())
+
+  @@index (fields: [timestamp,totalDistance,totalElapsedTime, totalCalories, enhancedAvgSpeed, totalAscent])
 }
 
 // model GPXFile {

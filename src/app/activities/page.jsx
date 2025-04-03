@@ -17,9 +17,11 @@ async function ActivitiesPage({ searchParams, searchCount }) {
         <ActivityFilterBar sportTypes={fetchedTypes} />
       </div>
 
-      <Suspense key={params} fallback={<Loading />}>
-        <ActivityList params={params} />
-      </Suspense>
+      <div className="p-3">
+        <Suspense key={params} fallback={<Loading />}>
+          <ActivityList params={params} />
+        </Suspense>
+      </div>
     </div>
   );
 }

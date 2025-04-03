@@ -11,6 +11,9 @@ export async function GET(req) {
     const sort_by = params.get("sort_by");
     const sort_order = params.get("sort_order");
 
+    const limit = params.get("limit");
+    const offset = params.get("offset");
+
     let query = {};
     if (sport) {
       query.sport = sport;
@@ -28,7 +31,8 @@ export async function GET(req) {
     else query_order["timestamp"] = "desc";
     const activities = await prisma.Activity.findMany({
       where: query,
-      //take: 5,
+      take: limit, // Fetch 'limit' number of records per page
+      skip: offset * limit, // Skip the records from previous pages
       orderBy: query_order,
       omit: {
         records: true,
@@ -36,7 +40,7 @@ export async function GET(req) {
       },
     });
 
-    return NextResponse.json(activities);
+    return NextResponse.json({ activities, nextOffset: offset + 1 });
   } catch (error) {
     throw new Error(error.message);
   }

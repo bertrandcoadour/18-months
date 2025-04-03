@@ -15,8 +15,10 @@ export default function WorldMap({ countries }) {
   const router = useRouter();
   const params = useSearchParams();
 
+  console.log(countries);
+
   const countryQueries = useQueries({
-    queries: countries.map((country) => ({
+    queries: countries?.map((country) => ({
       queryKey: ["countryShape", country?.entryName],
       queryFn: async () => {
         const res = await fetch(`/api/countryShape/${country?.entryName}`);

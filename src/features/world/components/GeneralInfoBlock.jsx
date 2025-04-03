@@ -1,8 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import Link from "next/link";
-
 import {
   faCloudArrowUp,
   faPassport,
@@ -25,6 +20,8 @@ import {
   cyclingActivitiesMaximumSpeed,
   cyclingActivitiesTotalDistance,
   getActivitiesCountries,
+  getActivitiesCities,
+  getActivitiesTypes,
   getTotalTimeOfTraining,
   runningActivitiesAvgPace,
   runningActivitiesCount,
@@ -32,147 +29,45 @@ import {
   walkingActivitiesCount,
   walkingActivitiesTotalAscent,
   walkingActivitiesTotalDistance,
+  cyclingActivitiesCount,
 } from "@/src/actions/activitiesActions";
 import IconCard from "@/src/components/IconCard";
 import { convertStringifiedDBTypeToActivityType } from "@/src/utils/Global/convertData";
+import { cache } from "react";
 
-function GeneralInfoBlock({ countries, cities, types }) {
-  const [walkingDistance, setWalkingDistance] = useState(0);
-  const [runningDistance, setRunningDistance] = useState(0);
-  const [cyclingDistance, setCyclingDistance] = useState(0);
-  const [avgRunningPace, setAvgRunningPace] = useState(0);
-  const [walkingTotalAscent, setWalkingTotalAscent] = useState(0);
-  const [cyclingMaxSpeed, setCyclingMaxSpeed] = useState(0);
-  const [totalTime, setTotalTime] = useState(0);
-
-  const mostFrequentCountry = countries.reduce((max, current) => {
+async function GeneralInfoBlock() {
+  const activitiesInCountries = await getActivitiesCountries();
+  const mostFrequentCountry = activitiesInCountries?.reduce((max, current) => {
     return current.entryOccurences > max.entryOccurences ? current : max;
-  }, countries[0]); // Start with the first country as the initial max
+  }, activitiesInCountries?.at(0)); // Start with the first country as the initial max
 
-  const mostFrequentCity = cities.reduce((max, current) => {
+  const activitiesInCities = await getActivitiesCities();
+  const mostFrequentCity = activitiesInCities?.reduce((max, current) => {
     return current.entryOccurences > max.entryOccurences ? current : max;
-  }, cities[0]); // Start with the first city as the initial max
+  }, activitiesInCities?.at(0)); // Start with the first country as the initial max
 
-  const totalOccurrences = countries.reduce((sum, country) => {
+  const activitiesTypes = await getActivitiesTypes();
+  const mostFrequentType = activitiesTypes?.reduce((max, current) => {
+    return current.entryOccurences > max.entryOccurences ? current : max;
+  }, activitiesTypes?.at(0)); // Start with the first country as the initial max
+
+  const totalOccurrences = activitiesInCountries.reduce((sum, country) => {
     return sum + country.entryOccurences;
   }, 0); // Start with an initial sum of 0
 
-  const mostFrequentType = types.reduce((max, current) => {
-    return current.entryOccurences > max.entryOccurences ? current : max;
-  }, types[0]); // Start with the first type as the initial max
+  const runningCount = await runningActivitiesCount();
+  const totalRunningDistance = await runningActivitiesTotalDistance();
+  const avgRunningPace = await runningActivitiesAvgPace();
 
-  const getTypeOccurences = (activityType) => {
-    const foundType = types.find((type) => type.entryName === activityType);
-    if (foundType) {
-      return foundType.entryOccurences;
-    } else {
-      return undefined;
-    }
-  };
+  const walkingCount = await walkingActivitiesCount();
+  const walkingTotalDistance = await walkingActivitiesTotalDistance();
+  const walkingTotalAscent = await walkingActivitiesTotalAscent();
 
-  useEffect(() => {
-    const fetchRunningDistance = async () => {
-      try {
-        const res = await fetch("/api/activities/running/totalDistance", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch running total distance");
-        }
-        setRunningDistance(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch running total distance");
-      }
-    };
+  const cyclingCount = await cyclingActivitiesCount();
+  const cyclingTotalDistance = await cyclingActivitiesTotalDistance();
+  const cyclingMaxSpeed = await cyclingActivitiesMaximumSpeed();
 
-    const fetchWalkingDistance = async () => {
-      try {
-        const res = await fetch("/api/activities/walking/totalDistance", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch walking total distance");
-        }
-        setWalkingDistance(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch walking total distance");
-      }
-    };
-    const fetchCyclingDistance = async () => {
-      try {
-        const res = await fetch("/api/activities/cycling/totalDistance", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch cycling total distance");
-        }
-        setCyclingDistance(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch cycling total distance");
-      }
-    };
-
-    const fetchAvgRunningPace = async () => {
-      try {
-        const res = await fetch("/api/activities/running/averagePace", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch average running pace");
-        }
-        setAvgRunningPace(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch average running pace");
-      }
-    };
-
-    const fetchWalkingTotalAscent = async () => {
-      try {
-        const res = await fetch("/api/activities/walking/totalAscent", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch walking total ascent");
-        }
-        setWalkingTotalAscent(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch average running pace");
-      }
-    };
-
-    const fetchCyclingMaxSpeed = async () => {
-      try {
-        const res = await fetch("/api/activities/cycling/maximumSpeed", {
-          method: "GET",
-          cache: "force-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch cycling maximum speed");
-        }
-        setCyclingMaxSpeed(await res.json());
-      } catch (error) {
-        throw new Error("Failed to fetch cycling maximum speed");
-      }
-    };
-
-    const fetchTotalTime = async () => {
-      const total = await getTotalTimeOfTraining();
-      setTotalTime(total);
-    };
-
-    fetchRunningDistance();
-    fetchWalkingDistance();
-    fetchCyclingDistance();
-    fetchAvgRunningPace();
-    fetchWalkingTotalAscent();
-    fetchCyclingMaxSpeed();
-    fetchTotalTime();
-  }, []);
+  const totalTime = await getTotalTimeOfTraining();
 
   return (
     <div className="flex flex-col h-full">
@@ -185,12 +80,12 @@ function GeneralInfoBlock({ countries, cities, types }) {
         />
         <IconCard
           icon={faPassport}
-          title={countries.length}
+          title={activitiesInCountries.length}
           subTitle={"Countries"}
         />
         <IconCard
           icon={faFlagUsa}
-          title={mostFrequentCountry.entryName}
+          title={mostFrequentCountry?.entryName}
           subTitle={"most visitied country"}
         />
         <IconCard
@@ -218,12 +113,12 @@ function GeneralInfoBlock({ countries, cities, types }) {
         <IconCard
           className=""
           icon={faPersonRunning}
-          title={getTypeOccurences("running generic")}
+          title={runningCount}
           subTitle={"activities"}
         />
         <IconCard
           icon={faRoad}
-          title={runningDistance}
+          title={totalRunningDistance}
           subTitle={"total distance (km)"}
         />
         <IconCard
@@ -236,12 +131,12 @@ function GeneralInfoBlock({ countries, cities, types }) {
       <div className="grid grid-cols-2 xl:grid-cols-3 p-1 pb-5">
         <IconCard
           icon={faPersonHiking}
-          title={getTypeOccurences("walking generic")}
+          title={walkingCount}
           subTitle={"activities"}
         />
         <IconCard
           icon={faRoad}
-          title={walkingDistance}
+          title={walkingTotalDistance}
           subTitle={"total distance (km)"}
         />
         <IconCard
@@ -254,14 +149,14 @@ function GeneralInfoBlock({ countries, cities, types }) {
         <div>
           <IconCard
             icon={faPersonBiking}
-            title={getTypeOccurences("cycling generic")}
+            title={cyclingCount}
             subTitle={"activities"}
           />
         </div>
         <div>
           <IconCard
             icon={faRoad}
-            title={cyclingDistance}
+            title={cyclingTotalDistance}
             subTitle={"total distance (km)"}
           />
         </div>

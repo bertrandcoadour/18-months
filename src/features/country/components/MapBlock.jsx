@@ -39,8 +39,6 @@ function MapBlock({ shape, activities }) {
     if (needFetch) {
       setIsFetching(true);
 
-      console.log(["activityCoordinates", marker?.options.id]);
-
       const data = await queryClient.fetchQuery({
         queryKey: ["activityCoordinates", marker?.options.id],
         queryFn: async () => {
